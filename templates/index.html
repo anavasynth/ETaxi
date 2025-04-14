@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Таксі | Планування маршруту</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body {
+      padding-top: 70px;
+      background-color: #f8fdf8;
+    }
+    .navbar {
+      background-color: #198754 !important;
+    }
+    .navbar-brand, .nav-link {
+      color: #fff !important;
+    }
+    #map {
+      height: 500px;
+      border: 3px solid #198754;
+      border-radius: 10px;
+    }
+    .form-control {
+      border-radius: 20px;
+    }
+    .autocomplete-suggestions {
+      position: absolute;
+      background: white;
+      max-height: 150px;
+      overflow-y: auto;
+      z-index: 1000;
+      width: 100%;
+      border-radius: 10px;
+    }
+    .autocomplete-suggestion {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+    .autocomplete-suggestion:hover {
+      background: #e9fbe9;
+    }
+    .output-box {
+      margin-top: 1rem;
+      background: #e9fbe9;
+      border-left: 5px solid #198754;
+      padding: 1rem;
+      border-radius: 10px;
+    }
+    /* Footer */
+    footer {
+      background: #2e8b57;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Навігаційне меню -->
+  <nav class="navbar navbar-expand-lg fixed-top shadow">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">🚖 Таксі</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a id="navRide" class="nav-link" href="#ride">Поїздка</a></li>
+          <li class="nav-item"><a id="navTariff" class="nav-link" href="#tariffs">Тарифи</a></li>
+        </ul>
+      </div>
+              <div class="d-flex align-items-center ms-auto">
+  <select id="languageSwitcher" class="form-select w-auto">
+    <option value="uk">🇺🇦 UA</option>
+    <option value="en">🇬🇧 EN</option>
+    <option value="pl">🇵🇱 PL</option>
+  </select>
+</div>
+    </div>
+  </nav>
+
+  <!-- Секція поїздки -->
+  <section id="ride" class="container">
+    <h2 class="mb-4 text-success">Планування маршруту</h2>
+    <div class="row mb-3">
+      <div class="col-md-6 position-relative">
+        <label class="form-label" for="start" id="label-start">📍 Місце посадки</label>
+        <div class="d-flex gap-2">
+          <input id="start" class="form-control" placeholder="Введіть адресу або координати" oninput="searchLocation(this, 'start')" autocomplete="off">
+          <button id="chooseMarkerButton1" class="btn btn-success" onclick="enableMapClick('start')">Обрати</button>
+        </div>
+        <div id="start-suggestions" class="autocomplete-suggestions"></div>
+      </div>
+      <div class="col-md-6 position-relative">
+        <label class="form-label" for="end" id="label-end">📍 Місце висадки</label>
+        <div class="d-flex gap-2">
+          <input id="end" class="form-control" placeholder="Введіть адресу або координати" oninput="searchLocation(this, 'end')" autocomplete="off">
+          <button id="chooseMarkerButton2" class="btn btn-success" onclick="enableMapClick('end')">Обрати</button>
+        </div>
+        <div id="end-suggestions" class="autocomplete-suggestions"></div>
+      </div>
+    </div>
+    <div id="map" class="mb-3"></div>
+    <div id="distance" class="output-box text-dark fw-medium"></div>
+  </section>
+
+<!-- Секція тарифів -->
+<section id="tariffs" class="container mt-5">
+  <h2 class="mb-4 text-success">📋 Тарифи</h2>
+  <div class="row g-4">
+    <div class="col-md-6 col-lg-3 d-flex">
+      <div class="card border-success shadow h-100 w-100">
+        <div class="card-body">
+          <h5 class="card-title text-success">Tariff I</h5>
+          <p class="card-text"><strong>Price:</strong> 2.82 PLN/km</p>
+          <p class="card-text small">The rate per kilometer applied on weekdays within the administrative boundaries of the city.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3 d-flex">
+      <div class="card border-success shadow h-100 w-100">
+        <div class="card-body">
+          <h5 class="card-title text-success">Tariff II</h5>
+          <p class="card-text"><strong>Price:</strong> 3.15 PLN/km</p>
+          <p class="card-text small">Applied during nighttime hours from 10:00 PM to 6:00 AM and on Sundays and public holidays.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3 d-flex">
+      <div class="card border-success shadow h-100 w-100">
+        <div class="card-body">
+          <h5 class="card-title text-success">Tariff III</h5>
+          <p class="card-text"><strong>Price:</strong> 3.79 PLN/km</p>
+          <p class="card-text small">Weekdays between 6:00 AM and 10:00 PM outside the city limits.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-3 d-flex">
+      <div class="card border-success shadow h-100 w-100">
+        <div class="card-body">
+          <h5 class="card-title text-success">Tariff IV</h5>
+          <p class="card-text"><strong>Price:</strong> 4.00 PLN/km</p>
+          <p class="card-text small">Nighttime or Sundays/holidays outside the city limits.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <footer>
+    &copy; 2025 Taxi Service. Всі права захищено.
+  </footer>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([50.0647, 19.9450], 12);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    let startMarker, endMarker, routeLayer;
+    let startCoords = null, endCoords = null;
+    let currentInputType = null;
+
+    function enableMapClick(type) {
+      currentInputType = type;
+      alert(`Натисніть на карту, щоб вибрати точку для ${type === 'start' ? 'посадки' : 'висадки'}.`);
+    }
+
+    map.on('click', (e) => {
+      if (!currentInputType) return;
+      const latlng = e.latlng;
+      setMarker(currentInputType, latlng, currentInputType === 'start' ? 'Посадка (з карти)' : 'Висадка (з карти)');
+      document.getElementById(currentInputType).value = `${latlng.lat.toFixed(5)}, ${latlng.lng.toFixed(5)}`;
+      currentInputType = null;
+    });
+
+    function setMarker(type, latlng, label) {
+      if (type === 'start') {
+        if (startMarker) map.removeLayer(startMarker);
+        startCoords = [latlng.lng, latlng.lat];
+        startMarker = L.marker(latlng).addTo(map).bindPopup(label).openPopup();
+      } else {
+        if (endMarker) map.removeLayer(endMarker);
+        endCoords = [latlng.lng, latlng.lat];
+        endMarker = L.marker(latlng).addTo(map).bindPopup(label).openPopup();
+      }
+
+      if (startCoords && endCoords) {
+        getRoute(startCoords, endCoords);
+      }
+    }
+
+    function searchLocation(input, type) {
+      const query = input.value;
+      const suggestionsBox = document.getElementById(`${type}-suggestions`);
+      suggestionsBox.innerHTML = '';
+      if (query.length < 3) return;
+
+      fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`)
+        .then(res => res.json())
+        .then(results => {
+          suggestionsBox.innerHTML = '';
+          results.forEach(result => {
+            const div = document.createElement('div');
+            div.classList.add('autocomplete-suggestion');
+            div.textContent = result.display_name;
+            div.onclick = () => {
+              input.value = result.display_name;
+              const latlng = L.latLng(result.lat, result.lon);
+              setMarker(type, latlng, type === 'start' ? 'Посадка (пошук)' : 'Висадка (пошук)');
+              map.setView(latlng, 14);
+              suggestionsBox.innerHTML = '';
+            };
+            suggestionsBox.appendChild(div);
+          });
+        });
+    }
+
+    function getRoute(start, end) {
+      fetch('/route', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ coordinates: [start, end] })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (!data || !data.features || !data.features[0]) {
+          document.getElementById('distance').innerText = 'Маршрут не знайдено!';
+          return;
+        }
+
+        if (routeLayer) map.removeLayer(routeLayer);
+        routeLayer = L.geoJSON(data, {
+          style: { color: 'green', weight: 5 }
+        }).addTo(map);
+
+        const distance = data.features[0].properties.summary.distance / 1000;
+        const tariffInfo = getTariff();
+        const price = distance * tariffInfo.rate;
+
+        document.getElementById('distance').innerHTML =
+          `🚗 <b>Довжина маршруту:</b> ${distance.toFixed(2)} км<br>` +
+          `💰 <b>Тариф:</b> ${tariffInfo.name} (${tariffInfo.rate.toFixed(2)} PLN/км)<br>` +
+          `🧾 <b>Вартість:</b> ${price.toFixed(2)} PLN`;
+      })
+      .catch(error => {
+        console.error('Error fetching route:', error);
+        document.getElementById('distance').innerText = 'Помилка при розрахунку маршруту';
+      });
+    }
+
+    function getTariff() {
+      const now = new Date();
+      const hour = now.getHours();
+      const day = now.getDay();
+      const isNight = hour >= 22 || hour < 6;
+      const isSunday = day === 0;
+      const isInsideCity = true;
+
+      if (isNight || isSunday) {
+        return isInsideCity ? { name: "Tariff II", rate: 3.15 } : { name: "Tariff IV", rate: 4.00 };
+      } else {
+        return isInsideCity ? { name: "Tariff I", rate: 2.82 } : { name: "Tariff III", rate: 3.79 };
+      }
+    }
+  </script>
+
+<script>
+  const translations = {
+    uk: {
+        navRide: "Поїздка",
+        navTariff: "Тарифи",
+      rideTitle: "Планування маршруту",
+      pickup: "📍 Місце посадки",
+        chooseMarkerButton: "Обрати",
+      dropoff: "📍 Місце висадки",
+      tariffTitle: "📋 Тарифи",
+      tariffs: [
+        { name: "Тариф I", desc: "Ціна: 2.82 PLN/км", info: "Тариф у межах міста в будні дні." },
+        { name: "Тариф II", desc: "Ціна: 3.15 PLN/км", info: "Нічний тариф та вихідні." },
+        { name: "Тариф III", desc: "Ціна: 3.79 PLN/км", info: "Будні за межами міста." },
+        { name: "Тариф IV", desc: "Ціна: 4.00 PLN/км", info: "Ніч або вихідні за межами міста." }
+      ]
+    },
+    en: {
+        navRide: "Ride",
+        navTariff: "Tariffs",
+      rideTitle: "Route Planning",
+      pickup: "📍 Pickup Location",
+        chooseMarkerButton: "Choose",
+      dropoff: "📍 Drop-off Location",
+      tariffTitle: "📋 Tariffs",
+      tariffs: [
+        { name: "Tariff I", desc: "Price: 2.82 PLN/km", info: "Weekday city rate." },
+        { name: "Tariff II", desc: "Price: 3.15 PLN/km", info: "Night and holiday rate." },
+        { name: "Tariff III", desc: "Price: 3.79 PLN/km", info: "Weekday suburban rate." },
+        { name: "Tariff IV", desc: "Price: 4.00 PLN/km", info: "Night or weekend suburban rate." }
+      ]
+    },
+    pl: {
+        navRide: "Poizdka",
+        navTariff: "Taryfy",
+      rideTitle: "Planowanie trasy",
+      pickup: "📍 Miejsce odbioru",
+      chooseMarkerButton: "Vibrac",
+      dropoff: "📍 Miejsce wysadzenia",
+      tariffTitle: "📋 Taryfy",
+      tariffs: [
+        { name: "Taryfa I", desc: "Cena: 2.82 PLN/km", info: "Stawka dzienna w mieście." },
+        { name: "Taryfa II", desc: "Cena: 3.15 PLN/km", info: "Noc i święta." },
+        { name: "Taryfa III", desc: "Cena: 3.79 PLN/km", info: "Dzienna poza miastem." },
+        { name: "Taryfa IV", desc: "Cena: 4.00 PLN/km", info: "Noc lub święta poza miastem." }
+      ]
+    }
+  };
+
+  document.getElementById('languageSwitcher').addEventListener('change', function () {
+    const lang = this.value;
+    const t = translations[lang];
+
+    // Заміна заголовків
+    document.querySelector('#ride h2').textContent = t.rideTitle;
+    document.getElementById('label-start').textContent = t.pickup;
+    document.getElementById('label-end').textContent = t.dropoff;
+    document.querySelector('#tariffs h2').textContent = t.tariffTitle;
+
+    document.querySelector('#chooseMarkerButton1').textContent = t.chooseMarkerButton;
+    document.querySelector('#chooseMarkerButton2').textContent = t.chooseMarkerButton;
+
+    document.querySelector('#navRide').textContent = t.navRide;
+    document.querySelector('#navTariff').textContent = t.navTariff;
+
+    // Заміна тарифів
+    const cards = document.querySelectorAll('#tariffs .card');
+    cards.forEach((card, index) => {
+      card.querySelector('.card-title').textContent = t.tariffs[index].name;
+      const paragraphs = card.querySelectorAll('.card-text');
+      paragraphs[0].textContent = t.tariffs[index].desc;
+      paragraphs[1].textContent = t.tariffs[index].info;
+    });
+  });
+</script>
+
+</body>
+</html>
