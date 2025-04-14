@@ -161,6 +161,19 @@
     let startCoords = null, endCoords = null;
     let currentInputType = null;
 
+async function isWithinCity(lat, lon) {
+  try {
+    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+    const data = await response.json();
+    console.log('Reverse geocoding data:', data); // Логування даних
+
+    // Перевірте, чи адреса містить назву міста
+    return data.address.city;
+  } catch (error) {
+    console.error('Error in isWithinCity:', error);
+    return false;
+  }
+}
     function enableMapClick(type) {
       currentInputType = type;
       alert(`Натисніть на карту, щоб вибрати точку для ${type === 'start' ? 'посадки' : 'висадки'}.`);
@@ -216,53 +229,62 @@
         });
     }
 
-    function getRoute(start, end) {
-      fetch('/route', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ coordinates: [start, end] })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (!data || !data.features || !data.features[0]) {
-          document.getElementById('distance').innerText = 'Маршрут не знайдено!';
-          return;
-        }
+async function getRoute(start, end) {
+  try {
+    const response = await fetch('/route', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ coordinates: [start, end] })
+    });
+    const data = await response.json();
 
-        if (routeLayer) map.removeLayer(routeLayer);
-        routeLayer = L.geoJSON(data, {
-          style: { color: 'green', weight: 5 }
-        }).addTo(map);
-
-        const distance = data.features[0].properties.summary.distance / 1000;
-        const tariffInfo = getTariff();
-        const price = distance * tariffInfo.rate;
-
-        document.getElementById('distance').innerHTML =
-          `🚗 <b>Довжина маршруту:</b> ${distance.toFixed(2)} км<br>` +
-          `💰 <b>Тариф:</b> ${tariffInfo.name} (${tariffInfo.rate.toFixed(2)} PLN/км)<br>` +
-          `🧾 <b>Вартість:</b> ${price.toFixed(2)} PLN`;
-      })
-      .catch(error => {
-        console.error('Error fetching route:', error);
-        document.getElementById('distance').innerText = 'Помилка при розрахунку маршруту';
-      });
+    if (!data || !data.features || !data.features[0]) {
+      document.getElementById('distance').innerText = 'Маршрут не знайдено!';
+      return;
     }
 
-    function getTariff() {
-      const now = new Date();
-      const hour = now.getHours();
-      const day = now.getDay();
-      const isNight = hour >= 22 || hour < 6;
-      const isSunday = day === 0;
-      const isInsideCity = true;
+    if (routeLayer) map.removeLayer(routeLayer);
+    routeLayer = L.geoJSON(data, {
+      style: { color: 'green', weight: 5 }
+    }).addTo(map);
 
-      if (isNight || isSunday) {
-        return isInsideCity ? { name: "Tariff II", rate: 3.15 } : { name: "Tariff IV", rate: 4.00 };
-      } else {
-        return isInsideCity ? { name: "Tariff I", rate: 2.82 } : { name: "Tariff III", rate: 3.79 };
-      }
+    const distance = data.features[0].properties.summary.distance / 1000;
+    const tariffInfo = await getTariff(start, end);
+    const price = distance * tariffInfo.rate;
+
+    document.getElementById('distance').innerHTML =
+      `🚗 <b>Довжина маршруту:</b> ${distance.toFixed(2)} км<br>` +
+      `💰 <b>Тариф:</b> ${tariffInfo.name} (${tariffInfo.rate.toFixed(2)} PLN/км)<br>` +
+      `🧾 <b>Вартість:</b> ${price.toFixed(2)} PLN`;
+  } catch (error) {
+    console.error('Error fetching route:', error);
+    document.getElementById('distance').innerText = 'Помилка при розрахунку маршруту';
+  }
+}
+
+async function getTariff(startCoords, endCoords) {
+  try {
+    const isStartInsideCity = await isWithinCity(startCoords[1], startCoords[0]);
+    const isEndInsideCity = await isWithinCity(endCoords[1], endCoords[0]);
+    console.log('Start inside city:', isStartInsideCity); // Логування
+    console.log('End inside city:', isEndInsideCity); // Логування
+
+    const now = new Date();
+    const hour = now.getHours();
+    const day = now.getDay();
+    const isNight = hour >= 22 || hour < 6;
+    const isSunday = day === 0;
+
+    if (isNight || isSunday) {
+      return isStartInsideCity && isEndInsideCity ? { name: "Tariff II", rate: 3.15 } : { name: "Tariff IV", rate: 4.00 };
+    } else {
+      return isStartInsideCity && isEndInsideCity ? { name: "Tariff I", rate: 2.82 } : { name: "Tariff III", rate: 3.79 };
     }
+  } catch (error) {
+    console.error('Error in getTariff:', error);
+    return { name: "Unknown", rate: 0 };
+  }
+}
   </script>
 
 <script>
