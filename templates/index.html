@@ -148,9 +148,35 @@
   </div>
 </section>
 
+  <!-- Modal -->
+<div class="modal fade" id="confirmRouteModal" tabindex="-1" aria-labelledby="confirmRouteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="confirmRouteModalLabel">Підтвердження маршруту</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити"></button>
+      </div>
+      <div class="modal-body">
+        Ви підтверджуєте обраний маршрут?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+        <button id="confirmRouteBtn" type="button" class="btn btn-success">Підтвердити</button>
+      </div>
+    </div>
+  </div>
+</div>
+  <button id="checkout-button">Оплатити</button>
+
   <footer>
     &copy; 2025 Taxi Service. Всі права захищено.
   </footer>
+
+
+  <!-- Bootstrap JS (потрібен для модалок) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://secure.wayforpay.com/server/pay-widget.js"></script>
+
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
@@ -160,6 +186,40 @@
     let startMarker, endMarker, routeLayer;
     let startCoords = null, endCoords = null;
     let currentInputType = null;
+
+document.getElementById('confirmRouteBtn').addEventListener('click', async () => {
+  try {
+    const amount = 12.50; // Отримай цю суму з твого маршруту
+    const email = "client@example.com"; // Замінити на актуальні
+    const phone = "+380991234567";
+
+    const res = await fetch('/get-order-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ amount, email, phone })
+    });
+
+    const orderData = await res.json();
+
+    const wayforpay = new Wayforpay();
+    wayforpay.run(orderData,
+      function (response) {
+        console.log("✅ Платіж успішний:", response);
+        alert("Платіж успішний!");
+      },
+      function (response) {
+        console.log("⚠️ Платіж не завершено:", response);
+        alert("Платіж не завершено.");
+      },
+      function (response) {
+        console.error("❌ Помилка:", response);
+        alert("Сталася помилка при оплаті.");
+      }
+    );
+  } catch (err) {
+    console.error("Помилка при ініціалізації платежу:", err);
+  }
+});
 
 async function isWithinCity(lat, lon) {
   try {
@@ -260,6 +320,10 @@ async function getRoute(start, end) {
     console.error('Error fetching route:', error);
     document.getElementById('distance').innerText = 'Помилка при розрахунку маршруту';
   }
+
+      // Показати модалку
+    const confirmModal = new bootstrap.Modal(document.getElementById('confirmRouteModal'));
+    confirmModal.show();
 }
 
 async function getTariff(startCoords, endCoords) {
@@ -360,6 +424,22 @@ async function getTariff(startCoords, endCoords) {
       paragraphs[0].textContent = t.tariffs[index].desc;
       paragraphs[1].textContent = t.tariffs[index].info;
     });
+  });
+</script>
+
+  <script src="https://js.stripe.com/v3/"></script>
+<script>
+  const stripe = Stripe('pk_test_51RE7BEPFfDXYRYYJDO3ubsoT4BwW3V6GSVutYTRJ3b3pkcrK89wM7EYkPlJJSKsqw57R5rYVykXCUuUEfrK6uSCl000lUoBaAb');
+
+  document.getElementById("checkout-button").addEventListener("click", () => {
+    fetch("/create-checkout-session", {
+      method: "POST",
+    })
+    .then(res => res.json())
+    .then(data => {
+      return stripe.redirectToCheckout({ sessionId: data.id });
+    })
+    .catch(error => console.error("Error:", error));
   });
 </script>
 
