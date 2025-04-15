@@ -93,21 +93,27 @@ def payment():
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
     try:
+        # Визначаємо хост
+        if 'localhost' in request.host or '127.0.0.1' in request.host:
+            base_url = 'http://localhost:5000'
+        else:
+            base_url = 'https://sockswebapp.onrender.com'
+
         session = stripe.checkout.Session.create(
-            payment_method_types=['card'],  # Apple Pay / Google Pay handled by 'card'
+            payment_method_types=['card'],
             line_items=[{
                 'price_data': {
                     'currency': 'pln',
                     'product_data': {
                         'name': 'Оплата за поїздку',
                     },
-                    'unit_amount': 500,  # 50.00 PLN
+                    'unit_amount': 500,
                 },
                 'quantity': 1,
             }],
             mode='payment',
-            success_url='http://localhost:5000/success',
-            cancel_url='http://localhost:5000/cancel',
+            success_url=f'{base_url}/success',
+            cancel_url=f'{base_url}/cancel',
         )
         return jsonify({'id': session.id})
     except Exception as e:
