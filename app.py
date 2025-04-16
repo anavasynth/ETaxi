@@ -93,6 +93,12 @@ def payment():
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
     try:
+        data = request.get_json()
+        price = data.get('price' , 0)
+
+        # У копійках (PLN × 100)
+        amount = int(price * 100)
+
         # Визначаємо хост
         if 'localhost' in request.host or '127.0.0.1' in request.host:
             base_url = 'http://localhost:5000'
@@ -107,7 +113,7 @@ def create_checkout_session():
                     'product_data': {
                         'name': 'Оплата за поїздку',
                     },
-                    'unit_amount': 500,
+                    'unit_amount': amount,
                 },
                 'quantity': 1,
             }],
@@ -118,6 +124,22 @@ def create_checkout_session():
         return jsonify({'id': session.id})
     except Exception as e:
         return jsonify(error=str(e)), 400
+
+
+@app.route('/create-transfer-order', methods=['POST'])
+def create_transfer_order():
+    data = request.json
+    email = data.get('email')
+    last_name = data.get('lastName')
+    first_name = data.get('firstName')
+    seats = data.get('seats')
+    price = data.get('price')
+    transfer = data.get('transfer')
+
+    # Тут можна зберегти дані в базу даних
+    print(f"Order received: {email}, {last_name}, {first_name}, {seats}, {price}, {transfer}")
+
+    return jsonify({"status": "success"}), 200
 
 @app.route('/success')
 def success():
