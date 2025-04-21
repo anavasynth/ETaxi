@@ -1,69 +1,25 @@
 from flask import Flask, render_template, request, jsonify
 import requests
-import hashlib
-import time
-import hmac
 import stripe
+from db_orders import db, Transfer, Ride
 app = Flask(__name__)
 
-ORS_API_KEY = '5b3ce3597851110001cf6248c3ea0212d9804a41b5fb786e5d14601b'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost/taxi_service'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-SECRET_KEY = "flk3409refn54t54t*FNJRET"
-MERCHANT_ACCOUNT = "test_merch_n1"
-DOMAIN_NAME = "localhost"
+db.init_app(app)
 
+with app.app_context():
+    db.create_all()
+
+#stripe
 app.config['STRIPE_PUBLIC_KEY'] = 'pk_test_51RE7BEPFfDXYRYYJDO3ubsoT4BwW3V6GSVutYTRJ3b3pkcrK89wM7EYkPlJJSKsqw57R5rYVykXCUuUEfrK6uSCl000lUoBaAb'
 app.config['STRIPE_SECRET_KEY'] = 'sk_test_51RE7BEPFfDXYRYYJUVbFQB9d66jDTydSG6MO5vTOJf5SNIvy6x605XiGuH1GFjo2QQwS6pKba7x34NYbgmu3WAen00rRSOq7aW'
 
 stripe.api_key = app.config['STRIPE_SECRET_KEY']
 
-class WayForPayHelper:
-    def __init__(self, account, domain, key):
-        self.account = account
-        self.domain = domain
-        self.key = key
-
-    def get_signature(self, data):
-        signature_text = (
-            f"{self.account};"
-            f"{self.domain};"
-            f"{data['orderReference']};"
-            f"{data['orderDate']};"
-            f"{data['amount']};"
-            f"{data['currency']};"
-            f"{';'.join(data['productName'])};"
-            f"{';'.join(str(c) for c in data['productCount'])};"
-            f"{';'.join(str(p) for p in data['productPrice'])}"
-        )
-        return hmac.new(self.key.encode("utf-8"), signature_text.encode("utf-8"), hashlib.md5).hexdigest()
-
-helper = WayForPayHelper(MERCHANT_ACCOUNT, DOMAIN_NAME, SECRET_KEY)
-
-@app.route('/get-order-data' , methods = ['POST'])
-def get_order_data():
-    payload = request.json
-    amount = payload.get('amount' , 100.0)
-    client_email = payload.get('email' , 'client@example.com')
-    client_phone = payload.get('phone' , '+380991234567')
-
-    now = int(time.time())
-    order_data = {
-        "merchantAccount": MERCHANT_ACCOUNT ,
-        "merchantDomainName": DOMAIN_NAME ,
-        "orderReference": f"ORDER-{now}" ,
-        "orderDate": now ,
-        "amount": float(amount) ,
-        "currency": "UAH" ,
-        "productName": ["Послуга перевезення"] ,
-        "productCount": [1] ,
-        "productPrice": [float(amount)] ,
-        "clientEmail": client_email ,
-        "clientPhone": client_phone ,
-        "language": "UA"
-    }
-
-    order_data["merchantSignature"] = helper.get_signature(order_data)
-    return jsonify(order_data)
+#maps
+ORS_API_KEY = '5b3ce3597851110001cf6248c3ea0212d9804a41b5fb786e5d14601b'
 
 @app.route('/')
 def index():
@@ -85,10 +41,6 @@ def get_route():
 
     response = requests.post(url , json = body , headers = headers)
     return jsonify(response.json())
-
-@app.route('/payment')
-def payment():
-    return "<h1>Оплата</h1><p>Тут буде сторінка оплати.</p>"
 
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
@@ -125,7 +77,6 @@ def create_checkout_session():
     except Exception as e:
         return jsonify(error=str(e)), 400
 
-
 @app.route('/create-transfer-order', methods=['POST'])
 def create_transfer_order():
     data = request.json
@@ -136,10 +87,68 @@ def create_transfer_order():
     price = data.get('price')
     transfer = data.get('transfer')
 
-    # Тут можна зберегти дані в базу даних
-    print(f"Order received: {email}, {last_name}, {first_name}, {seats}, {price}, {transfer}")
+    # Видаляємо текст 'PLN' з ціни
+    if isinstance(price , str) and 'PLN' in price:
+        price = price.replace('PLN' , '').strip()
+
+    new_transfer = Transfer(
+        email=email,
+        last_name=last_name,
+        first_name=first_name,
+        seats=seats,
+        price=price,
+        transfer=transfer
+    )
+    db.session.add(new_transfer)
+    try:
+        db.session.commit()
+        print("Transfer data committed successfully")
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error committing transfer data: {e}")
+        return jsonify({"status": "error", "message": str(e)}), 500
 
     return jsonify({"status": "success"}), 200
+
+@app.route('/create-route-order', methods=['POST'])
+def create_route_order():
+    data = request.json
+    first_name = data.get('firstName')
+    phone = data.get('phone')
+    price = data.get('price')
+
+    print(first_name, phone, price)
+
+    new_ride = Ride(
+        first_name=first_name,
+        phone=phone,
+        price=price
+    )
+    db.session.add(new_ride)
+    try:
+        db.session.commit()
+        print("Data committed successfully")
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error committing data: {e}")
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+    return jsonify({"status": "success"}), 200
+
+
+@app.route('/update-payment-status', methods=['POST'])
+def update_payment_status():
+    data = request.json
+    order_id = data.get('order_id')
+    payment_status = data.get('payment_status')
+
+    order = Transfer.query.get(order_id) or Ride.query.get(order_id)
+    if order:
+        order.payment_status = payment_status
+        db.session.commit()
+        return jsonify({"status": "success"}), 200
+    else:
+        return jsonify({"status": "error", "message": "Order not found"}), 404
 
 @app.route('/success')
 def success():

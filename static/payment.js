@@ -1,0 +1,29 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const stripe = Stripe('pk_test_51RE7BEPFfDXYRYYJDO3ubsoT4BwW3V6GSVutYTRJ3b3pkcrK89wM7EYkPlJJSKsqw57R5rYVykXCUuUEfrK6uSCl000lUoBaAb');
+
+  document.getElementById("confirmRouteBtn").addEventListener("click", () => {
+    fetch("/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ price: window.calculatedPrice })
+    })
+      .then(res => res.json())
+      .then(data => {
+        return stripe.redirectToCheckout({ sessionId: data.id });
+      })
+      .catch(error => console.error("Error:", error));
+  });
+
+  document.getElementById("payTransferBtn").addEventListener("click", () => {
+    fetch("/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ price: window.calculatedTransferPrice })
+    })
+      .then(res => res.json())
+      .then(data => {
+        return stripe.redirectToCheckout({ sessionId: data.id });
+      })
+      .catch(error => console.error("Error:", error));
+  });
+});
