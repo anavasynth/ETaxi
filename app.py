@@ -91,7 +91,7 @@ def stripe_webhook():
 
         ride = Ride.query.filter_by(id=order_id).first()
         if ride:
-            ride.payment_status = 'completed'
+            ride.payment_status = 'complete'
             ride.payment_id = payment_id
             db.session.commit()
             log_to_file(f"Ride #{order_id} updated in DB.")
@@ -205,22 +205,6 @@ def create_route_order():
     except Exception as e:
         db.session.rollback()
         return jsonify({"status": "error", "message": str(e)}), 500
-
-
-
-@app.route('/update-payment-status', methods=['POST'])
-def update_payment_status():
-    data = request.json
-    order_id = data.get('order_id')
-    payment_status = data.get('payment_status')
-
-    order = Transfer.query.get(order_id) or Ride.query.get(order_id)
-    if order:
-        order.payment_status = payment_status
-        db.session.commit()
-        return jsonify({"status": "success"}), 200
-    else:
-        return jsonify({"status": "error", "message": "Order not found"}), 404
 
 @app.route('/success')
 def success():
