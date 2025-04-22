@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import requests
 import stripe
 from db_orders import db, Transfer, Ride
+from datetime import datetime
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = (
@@ -25,6 +26,14 @@ stripe.api_key = app.config['STRIPE_SECRET_KEY']
 
 #maps
 ORS_API_KEY = '5b3ce3597851110001cf6248c3ea0212d9804a41b5fb786e5d14601b'
+
+# Файл для логів
+LOG_FILE = 'stripe_webhook.log'
+
+def log_to_file(message):
+    with open(LOG_FILE, 'a', encoding='utf-8') as f:
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        f.write(f"[{timestamp}] {message}\n")
 
 @app.route('/')
 def index():
@@ -55,30 +64,34 @@ def stripe_webhook():
     payload = request.data
     sig_header = request.headers.get('stripe-signature')
 
+    log_to_file("Webhook received")
+
     try:
         event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
     except ValueError as e:
-        # Невірний payload
+        log_to_file(f"Invalid payload: {e}")
         return jsonify(success=False), 400
     except stripe.error.SignatureVerificationError as e:
-        # Підпис неправильна
+        log_to_file(f"Signature error: {e}")
         return jsonify(success=False), 400
 
-    # Обробка подій Stripe
+    log_to_file(f"Event type: {event['type']}")
+
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
         order_id = session['metadata']['order_id']
-        payment_id = session['id']  # Це буде ID сесії Stripe, яку можна використовувати як payment_id
+        payment_id = session['id']
 
-        # Оновлюємо запис у БД
+        log_to_file(f"Checkout completed. Order ID: {order_id}, Payment ID: {payment_id}")
+
         ride = Ride.query.filter_by(id=order_id).first()
         if ride:
             ride.payment_status = 'completed'
-            ride.payment_id = payment_id  # Зберігаємо payment_id
+            ride.payment_id = payment_id
             db.session.commit()
+            log_to_file(f"Ride #{order_id} updated in DB.")
 
     return jsonify(success=True), 200
-
 
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
@@ -210,6 +223,11 @@ def success():
 @app.route('/cancel')
 def cancel():
     return render_template('cancel.html')
+
+@app.route('/adminpanel')
+def adminpanel():
+    rides = Ride.query.all()  # Отримати всі записи з таблиці Ride
+    return render_template('adminpanel.html', rides=rides)
 
 if __name__ == '__main__':
     app.run()

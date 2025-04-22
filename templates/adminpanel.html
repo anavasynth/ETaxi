@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Panel - Ride Table</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Phone</th>
+                <th>Price</th>
+                <th>Payment Status</th>
+                <th>Payment ID</th>
+                <th>Order ID</th>
+                <th>Created At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ride in rides %}
+            <tr>
+                <td>{{ ride.id }}</td>
+                <td>{{ ride.first_name }}</td>
+                <td>{{ ride.phone }}</td>
+                <td>{{ ride.price }}</td>
+                <td>{{ ride.payment_status }}</td>
+                <td>{{ ride.payment_id }}</td>
+                <td>{{ ride.order_id }}</td>
+                <td>{{ ride.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
