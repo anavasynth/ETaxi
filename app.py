@@ -91,7 +91,7 @@ def stripe_webhook():
 
         ride = Ride.query.filter_by(id=order_id).first()
         if ride:
-            ride.payment_status = 'complete'
+            ride.payment_status = 'completed'
             ride.payment_id = payment_id
             db.session.commit()
             log_to_file(f"Ride #{order_id} updated in DB.")
