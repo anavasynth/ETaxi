@@ -65,17 +65,21 @@ def stripe_webhook():
     sig_header = request.headers.get('stripe-signature')
 
     log_to_file("Webhook received")
+    print("webhook received")
 
     try:
         event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
     except ValueError as e:
         log_to_file(f"Invalid payload: {e}")
+        print(f"Invalid payload: {e}")
         return jsonify(success=False), 400
     except stripe.error.SignatureVerificationError as e:
         log_to_file(f"Signature error: {e}")
+        print(f"Signature error: {e}")
         return jsonify(success=False), 400
 
     log_to_file(f"Event type: {event['type']}")
+    print(f"Event type: {event['type']}")
 
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
@@ -83,6 +87,7 @@ def stripe_webhook():
         payment_id = session['id']
 
         log_to_file(f"Checkout completed. Order ID: {order_id}, Payment ID: {payment_id}")
+        print(f"Checkout completed. Order ID: {order_id}, Payment ID: {payment_id}")
 
         ride = Ride.query.filter_by(id=order_id).first()
         if ride:
@@ -90,6 +95,7 @@ def stripe_webhook():
             ride.payment_id = payment_id
             db.session.commit()
             log_to_file(f"Ride #{order_id} updated in DB.")
+            print(f"Ride #{order_id} updated in DB.")
 
     return jsonify(success=True), 200
 
