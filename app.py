@@ -95,6 +95,7 @@ def create_checkout_session():
         else:
             base_url = 'https://sockswebapp.onrender.com'
 
+        # Створення сесії Stripe
         session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=[{
@@ -114,6 +115,17 @@ def create_checkout_session():
             success_url=f'{base_url}/success',
             cancel_url=f'{base_url}/cancel',
         )
+
+        # Отримуємо order_id і payment_id для збереження
+        order_id = data.get('order_id')
+        payment_id = session.id  # Це буде ID сесії Stripe, яке збережемо в базі даних
+
+        # Оновлюємо запис у базі даних для цього замовлення
+        ride = Ride.query.filter_by(id=order_id).first()
+        if ride:
+            ride.payment_id = payment_id  # Зберігаємо payment_id
+            db.session.commit()
+
         return jsonify({'id': session.id})
     except Exception as e:
         return jsonify(error=str(e)), 400
