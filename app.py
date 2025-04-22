@@ -4,7 +4,12 @@ import stripe
 from db_orders import db, Transfer, Ride
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:1234@localhost/taxi_service'
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    "mysql+pymysql://root:MUDxSvIyvCTacrNdPWTVLyYySRAfhqEZ"
+    "@ballast.proxy.rlwy.net:30674/railway"
+)
+
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
