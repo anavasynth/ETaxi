@@ -92,40 +92,39 @@ document.getElementById('confirmRouteBtn').addEventListener('click', async () =>
 
         if (response.ok) {
             const data = JSON.parse(responseText);
-            const orderId = data.id;
 
-            alert('Замовлення успішно створено!');
-            const modal = bootstrap.Modal.getInstance(document.getElementById('confirmRouteModal'));
-            modal.hide();
+            if (data.status === 'success') {
+                const orderId = data.id;
 
-            // Перенаправлення на оплату
-            const stripe = Stripe('pk_test_51RE7BEPFfDXYRYYJDO3ubsoT4BwW3V6GSVutYTRJ3b3pkcrK89wM7EYkPlJJSKsqw57R5rYVykXCUuUEfrK6uSCl000lUoBaAb');
-            const checkoutResponse = await fetch("/create-checkout-session", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ price: window.calculatedPrice, order_id: orderId, order_type: 'ride' })
-            });
-            const checkoutData = await checkoutResponse.json();
+                alert('Замовлення успішно створено!');
+                const modal = bootstrap.Modal.getInstance(document.getElementById('confirmRouteModal'));
+                modal.hide();
 
-            if (checkoutResponse.ok) {
-                stripe.redirectToCheckout({ sessionId: checkoutData.id }).then(function (result) {
-                    if (result.error) {
-                        alert('Помилка оплати: ' + result.error.message);
-                    } else {
-                        // Оновлення статусу оплати
-                        fetch('/update-payment-status', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ order_id: orderId, payment_status: 'completed' })
-                        }).then(response => {
-                            if (!response.ok) {
-                                alert('Помилка оновлення статусу оплати.');
-                            }
-                        });
-                    }
+                // Перенаправлення на оплату
+                const stripe = Stripe('pk_test_51RE7BEPFfDXYRYYJDO3ubsoT4BwW3V6GSVutYTRJ3b3pkcrK89wM7EYkPlJJSKsqw57R5rYVykXCUuUEfrK6uSCl000lUoBaAb');
+                const checkoutResponse = await fetch("/create-checkout-session", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        price: window.calculatedPrice,
+                        order_id: orderId,
+                        order_type: 'ride'
+                    })
                 });
+
+                const checkoutData = await checkoutResponse.json();
+
+                if (checkoutResponse.ok) {
+                    stripe.redirectToCheckout({ sessionId: checkoutData.id }).then(function (result) {
+                        if (result.error) {
+                            alert('Помилка оплати: ' + result.error.message);
+                        }
+                    });
+                } else {
+                    alert('Помилка створення сесії оплати.');
+                }
             } else {
-                alert('Помилка створення сесії оплати.');
+                alert('Сталася помилка при створенні замовлення.');
             }
         } else {
             const errorData = JSON.parse(responseText);

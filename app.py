@@ -42,6 +42,37 @@ def get_route():
     response = requests.post(url , json = body , headers = headers)
     return jsonify(response.json())
 
+# Встанови свій webhook secret з Stripe dashboard
+endpoint_secret = 'whsec_6QktntzOs64AXj1at5TimvFABga4siMf'
+
+@app.route('/webhook', methods=['POST'])
+def stripe_webhook():
+    payload = request.data
+    sig_header = request.headers.get('stripe-signature')
+
+    try:
+        event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
+    except ValueError as e:
+        # Невірний payload
+        return jsonify(success=False), 400
+    except stripe.error.SignatureVerificationError as e:
+        # Підпис неправильна
+        return jsonify(success=False), 400
+
+    # Обробка подій Stripe
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        # Отримай свій order_id з metadata, які потрібно встановити
+        order_id = session['metadata']['order_id']
+
+        # Онови запис у БД
+        ride = Ride.query.filter_by(id=order_id).first()
+        if ride:
+            ride.payment_status = 'completed'
+            db.session.commit()
+
+    return jsonify(success=True), 200
+
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
     try:
@@ -58,20 +89,23 @@ def create_checkout_session():
             base_url = 'https://sockswebapp.onrender.com'
 
         session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            line_items=[{
+            payment_method_types = ['card'] ,
+            line_items = [{
                 'price_data': {
-                    'currency': 'pln',
+                    'currency': 'pln' ,
                     'product_data': {
-                        'name': 'Оплата за поїздку',
-                    },
-                    'unit_amount': amount,
-                },
-                'quantity': 1,
-            }],
-            mode='payment',
-            success_url=f'{base_url}/success',
-            cancel_url=f'{base_url}/cancel',
+                        'name': 'Оплата за поїздку' ,
+                    } ,
+                    'unit_amount': amount ,
+                } ,
+                'quantity': 1 ,
+            }] ,
+            metadata = {
+                'order_id': str(data.get('order_id'))  # Передай свій Ride.id
+            } ,
+            mode = 'payment' ,
+            success_url = f'{base_url}/success' ,
+            cancel_url = f'{base_url}/cancel' ,
         )
         return jsonify({'id': session.id})
     except Exception as e:
@@ -117,23 +151,20 @@ def create_route_order():
     phone = data.get('phone')
     price = data.get('price')
 
-    print(first_name, phone, price)
-
     new_ride = Ride(
         first_name=first_name,
         phone=phone,
-        price=price
+        price=price,
+        payment_status='pending'
     )
     db.session.add(new_ride)
     try:
         db.session.commit()
-        print("Data committed successfully")
+        return jsonify({"status": "success", "id": new_ride.id}), 200
     except Exception as e:
         db.session.rollback()
-        print(f"Error committing data: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
 
-    return jsonify({"status": "success"}), 200
 
 
 @app.route('/update-payment-status', methods=['POST'])
