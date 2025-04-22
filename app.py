@@ -119,6 +119,8 @@ def create_checkout_session():
         # Отримуємо order_id і payment_id для збереження
         order_id = data.get('order_id')
         payment_id = session.id  # Це буде ID сесії Stripe, яке збережемо в базі даних
+        print("order_id:", order_id)
+        print("payment_id:", payment_id)
 
         # Оновлюємо запис у базі даних для цього замовлення
         ride = Ride.query.filter_by(id=order_id).first()
