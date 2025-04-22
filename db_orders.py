@@ -20,5 +20,6 @@ class Ride(db.Model):
     phone = db.Column(db.String(20), nullable=False)
     price = db.Column(db.Numeric(10, 2), nullable=False)
     payment_status = db.Column(db.String(50), default='pending')
-    order_id = db.Column(db.String(255), nullable=True)  # Додайте це поле
+    payment_id = db.Column(db.String(255), nullable=True)  # Поле для збереження ID оплати
+    order_id = db.Column(db.String(255), nullable=True)  # Для вашого order_id
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())

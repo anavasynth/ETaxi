@@ -67,22 +67,24 @@ def stripe_webhook():
     # Обробка подій Stripe
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
-        # Отримай свій order_id з metadata, які потрібно встановити
         order_id = session['metadata']['order_id']
+        payment_id = session['id']  # Це буде ID сесії Stripe, яку можна використовувати як payment_id
 
-        # Онови запис у БД
+        # Оновлюємо запис у БД
         ride = Ride.query.filter_by(id=order_id).first()
         if ride:
             ride.payment_status = 'completed'
+            ride.payment_id = payment_id  # Зберігаємо payment_id
             db.session.commit()
 
     return jsonify(success=True), 200
+
 
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
     try:
         data = request.get_json()
-        price = data.get('price' , 0)
+        price = data.get('price', 0)
 
         # У копійках (PLN × 100)
         amount = int(price * 100)
@@ -94,27 +96,28 @@ def create_checkout_session():
             base_url = 'https://sockswebapp.onrender.com'
 
         session = stripe.checkout.Session.create(
-            payment_method_types = ['card'] ,
-            line_items = [{
+            payment_method_types=['card'],
+            line_items=[{
                 'price_data': {
-                    'currency': 'pln' ,
+                    'currency': 'pln',
                     'product_data': {
-                        'name': 'Оплата за поїздку' ,
-                    } ,
-                    'unit_amount': amount ,
-                } ,
-                'quantity': 1 ,
-            }] ,
-            metadata = {
-                'order_id': str(data.get('order_id'))  # Передай свій Ride.id
-            } ,
-            mode = 'payment' ,
-            success_url = f'{base_url}/success' ,
-            cancel_url = f'{base_url}/cancel' ,
+                        'name': 'Оплата за поїздку',
+                    },
+                    'unit_amount': amount,
+                },
+                'quantity': 1,
+            }],
+            metadata={
+                'order_id': str(data.get('order_id'))  # Передаємо order_id для ідентифікації замовлення
+            },
+            mode='payment',
+            success_url=f'{base_url}/success',
+            cancel_url=f'{base_url}/cancel',
         )
         return jsonify({'id': session.id})
     except Exception as e:
         return jsonify(error=str(e)), 400
+
 
 @app.route('/create-transfer-order', methods=['POST'])
 def create_transfer_order():
