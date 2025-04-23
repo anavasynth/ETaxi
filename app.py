@@ -5,11 +5,19 @@ from db_orders import db, Transfer, Ride
 from datetime import datetime
 app = Flask(__name__)
 
+
 app.config['SQLALCHEMY_DATABASE_URI'] = (
     "mysql+pymysql://root:MUDxSvIyvCTacrNdPWTVLyYySRAfhqEZ"
     "@ballast.proxy.rlwy.net:30674/railway"
 )
 
+
+'''
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    "mysql+pymysql://root:1234"
+    "@localhost/taxi_service"
+)
+'''
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -83,30 +91,44 @@ def stripe_webhook():
 
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
-        order_id = session['metadata']['order_id']
+        metadata = session.get('metadata', {})
         payment_id = session['id']
 
-        log_to_file(f"Checkout completed. Order ID: {order_id}, Payment ID: {payment_id}")
-        print(f"Checkout completed. Order ID: {order_id}, Payment ID: {payment_id}")
+        if 'order_id' in metadata:
+            order_id = metadata['order_id']
+            log_to_file(f"Checkout completed (Ride). Order ID: {order_id}, Payment ID: {payment_id}")
+            print(f"Checkout completed (Ride). Order ID: {order_id}, Payment ID: {payment_id}")
 
-        ride = Ride.query.filter_by(id=order_id).first()
-        if ride:
-            ride.payment_status = 'completed'
-            ride.payment_id = payment_id
-            db.session.commit()
-            log_to_file(f"Ride #{order_id} updated in DB.")
-            print(f"Ride #{order_id} updated in DB.")
+            ride = Ride.query.filter_by(id=order_id).first()
+            if ride:
+                ride.payment_status = 'completed'
+                ride.payment_id = payment_id
+                db.session.commit()
+                log_to_file(f"Ride #{order_id} updated in DB.")
+                print(f"Ride #{order_id} updated in DB.")
+
+        elif 'transfer_id' in metadata:
+            transfer_id = metadata['transfer_id']
+            log_to_file(f"Checkout completed (Transfer). Transfer ID: {transfer_id}, Payment ID: {payment_id}")
+            print(f"Checkout completed (Transfer). Transfer ID: {transfer_id}, Payment ID: {payment_id}")
+
+            transfer = Transfer.query.filter_by(id=transfer_id).first()
+            if transfer:
+                transfer.payment_status = 'completed'
+                transfer.payment_id = payment_id
+                db.session.commit()
+                log_to_file(f"Transfer #{transfer_id} updated in DB.")
+                print(f"Transfer #{transfer_id} updated in DB.")
 
     return jsonify(success=True), 200
+
 
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
     try:
         data = request.get_json()
         price = data.get('price', 0)
-
-        # У копійках (PLN × 100)
-        amount = int(price * 100)
+        amount = int(float(price) * 100)
 
         # Визначаємо хост
         if 'localhost' in request.host or '127.0.0.1' in request.host:
@@ -114,38 +136,52 @@ def create_checkout_session():
         else:
             base_url = 'https://sockswebapp.onrender.com'
 
-        # Створення сесії Stripe
+        # Перевірка, що це: трансфер чи поїздка
+        order_id = data.get('order_id')
+        transfer_id = data.get('transfer_id')
+        session_metadata = {}
+        product_name = ''
+
+        if order_id:
+            session_metadata['order_id'] = str(order_id)
+            product_name = 'Оплата за поїздку'
+        elif transfer_id:
+            session_metadata['transfer_id'] = str(transfer_id)
+            product_name = 'Оплата за трансфер'
+        else:
+            return jsonify(error="order_id або transfer_id обов’язкові"), 400
+
+        # Створюємо Stripe-сесію
         session = stripe.checkout.Session.create(
             payment_method_types=['card'],
             line_items=[{
                 'price_data': {
                     'currency': 'pln',
-                    'product_data': {
-                        'name': 'Оплата за поїздку',
-                    },
+                    'product_data': {'name': product_name},
                     'unit_amount': amount,
                 },
                 'quantity': 1,
             }],
-            metadata={
-                'order_id': str(data.get('order_id'))  # Передаємо order_id для ідентифікації замовлення
-            },
+            metadata=session_metadata,
             mode='payment',
             success_url=f'{base_url}/success',
             cancel_url=f'{base_url}/cancel',
         )
 
-        # Отримуємо order_id і payment_id для збереження
-        order_id = data.get('order_id')
-        payment_id = session.id  # Це буде ID сесії Stripe, яке збережемо в базі даних
-        print("order_id:", order_id)
+        payment_id = session.id
         print("payment_id:", payment_id)
 
-        # Оновлюємо запис у базі даних для цього замовлення
-        ride = Ride.query.filter_by(id=order_id).first()
-        if ride:
-            ride.payment_id = payment_id  # Зберігаємо payment_id
-            db.session.commit()
+        # Зберігаємо session.id в базі
+        if order_id:
+            ride = Ride.query.filter_by(id=order_id).first()
+            if ride:
+                ride.payment_id = payment_id
+                db.session.commit()
+        elif transfer_id:
+            transfer = Transfer.query.filter_by(id=transfer_id).first()
+            if transfer:
+                transfer.payment_id = payment_id
+                db.session.commit()
 
         return jsonify({'id': session.id})
     except Exception as e:
@@ -162,9 +198,8 @@ def create_transfer_order():
     price = data.get('price')
     transfer = data.get('transfer')
 
-    # Видаляємо текст 'PLN' з ціни
-    if isinstance(price , str) and 'PLN' in price:
-        price = price.replace('PLN' , '').strip()
+    if isinstance(price, str) and 'PLN' in price:
+        price = price.replace('PLN', '').strip()
 
     new_transfer = Transfer(
         email=email,
@@ -172,18 +207,18 @@ def create_transfer_order():
         first_name=first_name,
         seats=seats,
         price=price,
-        transfer=transfer
+        transfer=transfer,
+        payment_status='pending'  # можна додати статус
     )
+
     db.session.add(new_transfer)
     try:
         db.session.commit()
-        print("Transfer data committed successfully")
+        return jsonify({"status": "success", "id": new_transfer.id}), 200
     except Exception as e:
         db.session.rollback()
-        print(f"Error committing transfer data: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
 
-    return jsonify({"status": "success"}), 200
 
 @app.route('/create-route-order', methods=['POST'])
 def create_route_order():

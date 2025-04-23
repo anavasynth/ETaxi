@@ -32,28 +32,65 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.openTransferModal = openTransferModal;
 
-  document.getElementById('payTransferBtn').addEventListener('click', async () => {
-    const email = document.getElementById('email').value;
-    const lastName = document.getElementById('lastName').value;
-    const firstName = document.getElementById('firstName').value;
-    const seats = document.getElementById('seats').value;
-    const price = document.getElementById('price').value;
-    const transfer = document.getElementById('transferModalLabel').textContent.split(': ')[1];
+document.getElementById('payTransferBtn').addEventListener('click', async () => {
+  const email = document.getElementById('email').value;
+  const lastName = document.getElementById('lastName').value;
+  const firstName = document.getElementById('firstName').value;
+  const seats = document.getElementById('seats').value;
+  const price = document.getElementById('price').value;
+  const transfer = document.getElementById('transferModalLabel').textContent.split(': ')[1];
 
-    window.calculatedTransferPrice = parseFloat(price);
-
+  try {
     const response = await fetch('/create-transfer-order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, lastName, firstName, seats, price, transfer })
     });
 
+    const responseText = await response.text();
+    console.log('Transfer order response:', responseText);
+
     if (response.ok) {
-      alert('Замовлення успішно створено!');
-      const modal = bootstrap.Modal.getInstance(document.getElementById('transferModal'));
-      modal.hide();
+      const data = JSON.parse(responseText);
+      if (data.status === 'success') {
+        const transferId = data.id;
+
+        // Закриваємо модалку
+        const modal = bootstrap.Modal.getInstance(document.getElementById('transferModal'));
+        modal.hide();
+
+        // Перенаправлення на Stripe
+        const stripe = Stripe('pk_test_51RE7BEPFfDXYRYYJDO3ubsoT4BwW3V6GSVutYTRJ3b3pkcrK89wM7EYkPlJJSKsqw57R5rYVykXCUuUEfrK6uSCl000lUoBaAb');
+        const checkoutResponse = await fetch('/create-checkout-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            price: parseFloat(price),
+            order_id: transferId,
+            order_type: 'transfer'
+          })
+        });
+
+        const checkoutData = await checkoutResponse.json();
+
+        if (checkoutResponse.ok) {
+          stripe.redirectToCheckout({ sessionId: checkoutData.id }).then((result) => {
+            if (result.error) {
+              alert('Помилка оплати: ' + result.error.message);
+            }
+          });
+        } else {
+          alert('Помилка створення сесії Stripe.');
+        }
+      } else {
+        alert('Сталася помилка при створенні трансферу.');
+      }
     } else {
-      alert('Сталася помилка при створенні замовлення.');
+      const errorData = JSON.parse(responseText);
+      alert('Помилка при створенні трансферу: ' + errorData.message);
     }
-  });
+  } catch (error) {
+    alert('Помилка запиту: ' + error.message);
+  }
+});
 });
