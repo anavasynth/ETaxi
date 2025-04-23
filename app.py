@@ -47,6 +47,18 @@ def log_to_file(message):
 def index():
     return render_template('index.html')
 
+@app.route('/mainpage')
+def mainpage():
+    return render_template('mainpage.html')
+
+@app.route('/transfers')
+def transfers():
+    return render_template('transfers.html')
+
+@app.route('/route_details')
+def route_details():
+    return render_template('route_details.html')
+
 @app.route('/route' , methods = ['POST'])
 def get_route():
     data = request.json
@@ -127,6 +139,7 @@ def stripe_webhook():
 def create_checkout_session():
     try:
         data = request.get_json()
+        print(data)
         price = data.get('price', 0)
         amount = int(float(price) * 100)
 
@@ -223,14 +236,17 @@ def create_transfer_order():
 @app.route('/create-route-order', methods=['POST'])
 def create_route_order():
     data = request.json
+    print("data create:", data)
     first_name = data.get('firstName')
     phone = data.get('phone')
     price = data.get('price')
+    car_class = data.get('carClass')
 
     new_ride = Ride(
         first_name=first_name,
         phone=phone,
         price=price,
+        car_class=car_class,
         payment_status='pending'
     )
     db.session.add(new_ride)
@@ -252,7 +268,8 @@ def cancel():
 @app.route('/adminpanel')
 def adminpanel():
     rides = Ride.query.all()  # Отримати всі записи з таблиці Ride
-    return render_template('adminpanel.html', rides=rides)
+    transfers = Transfer.query.all()  # Отримати всі записи з таблиці Ride
+    return render_template('adminpanel.html', rides=rides, transfers=transfers)
 
 if __name__ == '__main__':
     app.run()

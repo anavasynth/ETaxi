@@ -66,7 +66,7 @@ document.getElementById('payTransferBtn').addEventListener('click', async () => 
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             price: parseFloat(price),
-            order_id: transferId,
+            transfer_id: transferId,
             order_type: 'transfer'
           })
         });

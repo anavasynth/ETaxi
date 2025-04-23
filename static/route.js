@@ -32,9 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('distance').innerText = 'Помилка при розрахунку маршруту';
     }
 
-    // Показати модалку
-    const confirmModal = new bootstrap.Modal(document.getElementById('confirmRouteModal'));
-    confirmModal.show();
   }
 
   window.getRoute = getRoute;
@@ -76,15 +73,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.isWithinCity = isWithinCity;
 
+  document.getElementById('confirmOrderBtn').addEventListener('click', async () => {
+  const startInput = document.getElementById('start').value.trim();
+  const endInput = document.getElementById('end').value.trim();
+  const selectedClass = document.querySelector('.ride-class-option.selected');
+
+  if (!startInput || !endInput) {
+    alert('Будь ласка, введіть обидві адреси.');
+    return;
+  }
+
+  if (!selectedClass) {
+    alert('Оберіть клас авто.');
+    return;
+  }
+
+  const startCoords = window.startCoords;
+  const endCoords = window.endCoords;
+
+  if (!startCoords || !endCoords) {
+    alert('Будь ласка, оберіть точки на мапі.');
+    return;
+  }
+
+  await getRoute(startCoords, endCoords);
+
+  // Після успішного побудування маршруту показати модалку
+  const confirmModal = new bootstrap.Modal(document.getElementById('confirmRouteModal'));
+  confirmModal.show();
+});
+
 document.getElementById('confirmRouteBtn').addEventListener('click', async () => {
     const firstName = document.getElementById('confirmFirstName').value;
     const phone = document.getElementById('confirmPhone').value;
+    const selectedClass = document.querySelector('.ride-class-option.selected');
+
+    const carClass = selectedClass.dataset.value;
 
     try {
         const response = await fetch('/create-route-order', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ firstName, phone, price: window.calculatedPrice })
+            body: JSON.stringify({ firstName, phone, price: window.calculatedPrice, carClass })
         });
 
         const responseText = await response.text();

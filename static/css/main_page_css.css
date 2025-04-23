@@ -1,0 +1,322 @@
+/* about section */
+.about {
+  display: flex;
+  justify-content: space-between;
+  padding: 80px 60px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  background: #fff;
+  gap: 40px;
+
+  width: 80%;
+  margin: 0 auto; /* Центрує блок */
+}
+
+.about-left {
+  flex: 1;
+}
+
+.section-label {
+  color: orange;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.about-left h2 {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.about-left p {
+  margin-bottom: 30px;
+  color: #555;
+}
+
+.stats {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.stat-box {
+  background: #111;
+  color: yellow;
+  padding: 40px 30px;
+  text-align: center;
+  border: 10px solid #444;
+  font-weight: bold;
+}
+
+.stat-box .stat-number {
+  font-size: 36px;
+  display: block;
+  margin-bottom: 5px;
+  color: #FFD700;
+}
+
+.green-box {
+  background-color: #3AAA35;
+  flex: 1;
+}
+
+.features {
+  display: flex;
+  gap: 40px;
+}
+
+.features h4 {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.features p {
+  color: #666;
+  font-size: 14px;
+}
+
+.about-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bar span {
+  width: 120px;
+}
+
+.progress {
+  flex: 1;
+  background-color: #f1f1f1;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+.fill {
+  background-color: orange;
+  height: 100%;
+  border-radius: 5px 0 0 5px;
+}
+
+.percent {
+  color: red;
+  font-weight: bold;
+}
+
+/* services section */
+
+.services {
+  padding: 80px 60px;
+  text-align: left;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+
+  width: 80%;
+  margin: 0 auto; /* Центрує блок */
+}
+
+.services .section-label {
+  color: orange;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.services h2 {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  max-width: 600px;
+}
+
+.service-cards {
+  display: flex;
+  flex-wrap: wrap; /* Дозволяє перенос */
+  gap: 40px;
+  justify-content: center; /* Центрує картки в рядку */
+  margin-bottom: 30px;
+}
+
+.card {
+  width: 260px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f1f1f1;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.card-image {
+  height: 160px;
+  width: 100%;
+  background-color: #3AAA35;
+}
+
+.card-image img {
+  height: 160px;
+  background-color: #3AAA35;
+  width: 100%;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.card-content h4 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+}
+
+.card-content p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.learn-more {
+  color: orange;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.services-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.services-bottom p {
+  flex: 1;
+  font-size: 14px;
+  color: #555;
+}
+
+.go-button {
+  background-color: #3AAA35;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* pricing-section */
+
+.pricing-section {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+.section-subtitle {
+  color: #ffc107;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.section-title {
+  font-size: 32px;
+  margin: 10px 0 40px;
+}
+.pricing-cards {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.card {
+  background-color: #1a1a1a;
+  color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  width: 300px;
+}
+.card.highlighted {
+  background-color: #e5e5e5;
+  color: #000;
+}
+.card .price {
+  font-size: 24px;
+  font-weight: bold;
+}
+.card .price span {
+  font-size: 14px;
+  color: #aaa;
+}
+.card ul {
+  text-align: left;
+  margin: 20px 0;
+  padding-left: 20px;
+}
+.card .btn {
+  display: inline-block;
+  background-color: #34c759;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+/* why-choose-us-section */
+
+.why-choose-us {
+  background-color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+.why-header {
+  max-width: 800px;
+  margin: 0 auto 40px;
+}
+.why-button {
+  border: 1px solid #000;
+  background: #fff;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 30px;
+}
+.features {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.feature {
+  flex: 1 1 200px;
+  text-align: center;
+}
+.feature img {
+  height: 40px;
+  margin-bottom: 10px;
+}
+.video-block {
+  background-color: #34c759;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+.play-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 48px;
+  cursor: pointer;
+}
+

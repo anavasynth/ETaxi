@@ -1,0 +1,113 @@
+.ride-section {
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+.ride-panel {
+  width: 280px; /* зменшив */
+  background-color: #111;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  flex-shrink: 0; /* не стискається */
+}
+
+.input-dark {
+  background-color: #222;
+  border: 1px solid #444;
+  color: white;
+}
+
+.ride-class-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ride-class-option {
+  background: #222;
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.2s;
+}
+
+.ride-class-option:hover {
+  background: #2a2a2a;
+}
+
+.ride-class-option.selected {
+  background-color: #3AAA35;
+  font-weight: bold;
+}
+
+.ride-map-wrapper {
+  flex-grow: 1;
+  position: relative;
+  min-width: 0; /* важливо для правильного розтягування */
+  max-width: calc(100vw - 280px); /* не більше, ніж лишилось */
+}
+
+.ride-map {
+  width: 100%;
+  height: 100%;
+}
+
+.map-info-box {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: white;
+  border-radius: 12px;
+  max-width: 300px;
+  z-index: 999; /* вище за Leaflet */
+  pointer-events: none; /* щоб не блокувати карту */
+}
+
+
+.with-button {
+  padding-right: 40px; /* залишаємо місце під кнопку справа */
+}
+
+.input-button {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  height: 30px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0 8px;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.input-button:hover {
+  background-color: #218838;
+}
+
+.autocomplete-suggestions {
+    position: absolute;
+    background: white;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 1000;
+    width: 100%;
+    border-radius: 10px;
+    color: red;
+}
+
+.output-box {
+      margin-top: 1rem;
+      background: #e9fbe9;
+      border-left: 5px solid #198754;
+      padding: 1rem;
+      border-radius: 10px;
+    }

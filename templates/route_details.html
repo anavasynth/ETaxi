@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/css/route_details.css">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+<section id="ride" class="ride-section d-flex">
+  <!-- Ліва панель -->
+  <div class="ride-panel text-white p-4">
+    <img src="/static/img/logo_footer.png" alt="eTaxi" class="mb-4" width="100">
+    <h4 class="mb-4">Route Details</h4>
+
+    <div class="mb-3 position-relative">
+  <input id="start" class="form-control input-dark with-button" placeholder="3429 Beacon St, NY" oninput="searchLocation(this, 'start')" autocomplete="off">
+  <button id="chooseMarkerButton1" class="input-button" onclick="enableMapClick('start')">📍</button>
+        <div id="start-suggestions" class="autocomplete-suggestions"></div>
+</div>
+
+
+<div class="mb-4 position-relative">
+  <input id="end" class="form-control input-dark with-button" placeholder="2374 State St, NY" oninput="searchLocation(this, 'end')" autocomplete="off">
+  <button id="chooseMarkerButton2" class="input-button" onclick="enableMapClick('end')">📍</button>
+     <div id="end-suggestions" class="autocomplete-suggestions"></div>
+</div>
+
+
+    <h5 class="mb-3">Choose Class</h5>
+    <div class="ride-class-list">
+      <div class="ride-class-option" data-value="Standard">Standart 🚗 <span>$15/km</span></div>
+      <div class="ride-class-option selected" data-value="Comfort">Comfort 🚙 <span>$20/km</span></div>
+      <div class="ride-class-option" data-value="XL">XL 🚐 <span>$30/km</span></div>
+    </div>
+
+    <button class="btn btn-success w-100 mt-4" id="confirmOrderBtn">Confirm order</button>
+    <button class="btn btn-outline-light w-100 mt-2">Cancel</button>
+  </div>
+
+  <!-- Права панель -->
+  <div class="ride-map-wrapper position-relative">
+  <div id="map" class="ride-map"></div>
+
+
+
+  <!-- Цей блок повинен залишатися ЗАВЖДИ -->
+  <div class="map-info-box shadow-lg p-3 rounded">
+      <div id="distance" class="output-box text-dark fw-medium"></div>
+    <p class="mb-1">Route - 2.5 Kilometers</p>
+    <div class="small text-muted">
+      <div>📍 Your Location: 3429 Beacon St, NY</div>
+      <div>📍 Destination: 2374 State St, NY</div>
+      <div>💵 Price: $30.52</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmRouteModal" tabindex="-1" aria-labelledby="confirmRouteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="confirmRouteModalLabel">Підтвердження маршруту</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити"></button>
+      </div>
+      <div class="modal-body">
+        <form id="confirmRouteForm">
+          <div class="mb-3">
+            <label for="confirmFirstName" class="form-label">Ім'я</label>
+            <input type="text" class="form-control" id="confirmFirstName" required>
+          </div>
+          <div class="mb-3">
+            <label for="confirmPhone" class="form-label">Номер телефону</label>
+            <input type="text" class="form-control" id="confirmPhone" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+        <button id="confirmRouteBtn" type="button" class="btn btn-success">Підтвердити</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+<script>
+    document.querySelectorAll('.ride-class-option').forEach(option => {
+  option.addEventListener('click', () => {
+    document.querySelectorAll('.ride-class-option').forEach(o => o.classList.remove('selected'));
+    option.classList.add('selected');
+  });
+});
+</script>
+
+<!-- Bootstrap JS (потрібен для модалок) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://secure.wayforpay.com/server/pay-widget.js"></script>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <script src="https://js.stripe.com/v3/"></script>
+
+  <!-- Підключення скриптів -->
+  <script src="/static/main.js" defer></script>
+  <script src="/static/map.js" defer></script>
+  <script src="/static/route.js" defer></script>
+  <script src="/static/transfer.js" defer></script>
+  <script src="/static/language.js" defer></script>
+  <script src="/static/payment.js" defer></script>
+</html>
