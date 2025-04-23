@@ -1,108 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+        .table td, .table th {
+            vertical-align: middle;
         }
 
-        th, td {
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
+        .status-completed {
+            background-color: #76e676;
         }
     </style>
 </head>
-<body>
-    <h1>Admin Panel - Ride Table</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Car class</th>
-                <th>Phone</th>
-                <th>Price</th>
-                <th>Payment Status</th>
-                <th>Payment ID</th>
-                <th>Driver</th>
-                <th>Created At</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for ride in rides %}
-            <tr>
-                <td>{{ ride.id }}</td>
-                <td>{{ ride.first_name }}</td>
-                <td>{{ ride.car_class }}</td>
-                <td>{{ ride.phone }}</td>
-                <td>{{ ride.price }}</td>
-                <td>{{ ride.payment_status }}</td>
-                <td>{{ ride.payment_id }}</td>
-                <td>
-                    <select name="" id="">
-                        <option value="d">Driver1</option>
-                        <option value="d">Driver2</option>
-                        <option value="d">Driver3</option>
-                    </select>
-                </td>
-                <td>{{ ride.created_at }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<body class="p-4">
+    <h1 class="mb-4">Admin Panel</h1>
 
-    <h1>Admin Panel - Transfer Table</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Email</th>
-                <th>Last Name</th>
-                <th>First Name</th>
-                <th>Seats</th>
-                <th>Price</th>
-                <th>Transfer</th>
-                <th>Payment Status</th>
-                <th>Payment ID</th>
-                <th>Driver</th>
-                <th>Created At</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for transfer in transfers %}
-            <tr>
-                <td>{{ transfer.id }}</td>
-                <td>{{ transfer.email }}</td>
-                <td>{{ transfer.last_name }}</td>
-                <td>{{ transfer.first_name }}</td>
-                <td>{{ transfer.seats }}</td>
-                <td>{{ transfer.price }}</td>
-                <td>{{ transfer.transfer }}</td>
-                <td>{{ transfer.payment_status }}</td>
-                <td>{{ transfer.payment_id }}</td>
-                <td>
-                    <select name="" id="">
-                        <option value="d">Driver1</option>
-                        <option value="d">Driver2</option>
-                        <option value="d">Driver3</option>
-                    </select>
-                </td>
-                <td>{{ transfer.created_at }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="rides-tab" data-bs-toggle="tab" data-bs-target="#rides" type="button" role="tab">Rides</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="transfers-tab" data-bs-toggle="tab" data-bs-target="#transfers" type="button" role="tab">Transfers</button>
+        </li>
+    </ul>
+
+    <!-- Tab content -->
+    <div class="tab-content mt-4" id="adminTabsContent">
+        <!-- Rides Tab -->
+        <div class="tab-pane fade show active" id="rides" role="tabpanel">
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Car Class</th>
+                        <th>Phone</th>
+                        <th>Price</th>
+                        <th>Payment Status</th>
+                        <th>Payment ID</th>
+                        <th>Driver</th>
+                        <th>Created At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ride in rides %}
+                    <tr class="{% if ride.payment_status == 'completed' %}table-success{% endif %}">
+                        <td>{{ ride.id }}</td>
+                        <td>{{ ride.first_name }}</td>
+                        <td>{{ ride.car_class }}</td>
+                        <td>{{ ride.phone }}</td>
+                        <td>{{ ride.price }}</td>
+                        <td>{{ ride.payment_status }}</td>
+                        <td>{{ ride.payment_id }}</td>
+                        <td>
+                            <select class="form-select">
+                                <option>Driver1</option>
+                                <option>Driver2</option>
+                                <option>Driver3</option>
+                            </select>
+                        </td>
+                        <td>{{ ride.created_at }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Transfers Tab -->
+        <div class="tab-pane fade" id="transfers" role="tabpanel">
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Seats</th>
+                        <th>Price</th>
+                        <th>Transfer</th>
+                        <th>Payment Status</th>
+                        <th>Payment ID</th>
+                        <th>Driver</th>
+                        <th>Created At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transfer in transfers %}
+                    <tr class="{% if transfer.payment_status == 'completed' %}table-success{% endif %}">
+                        <td>{{ transfer.id }}</td>
+                        <td>{{ transfer.email }}</td>
+                        <td>{{ transfer.last_name }}</td>
+                        <td>{{ transfer.first_name }}</td>
+                        <td>{{ transfer.seats }}</td>
+                        <td>{{ transfer.price }}</td>
+                        <td>{{ transfer.transfer }}</td>
+                        <td>{{ transfer.payment_status }}</td>
+                        <td>{{ transfer.payment_id }}</td>
+                        <td>
+                            <select class="form-select">
+                                <option>Driver1</option>
+                                <option>Driver2</option>
+                                <option>Driver3</option>
+                            </select>
+                        </td>
+                        <td>{{ transfer.created_at }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
