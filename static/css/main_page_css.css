@@ -320,3 +320,25 @@
   cursor: pointer;
 }
 
+/* lang styles */
+
+.language-select {
+  padding: 4px 8px;
+  font-size: 13px;
+  border-radius: 6px;
+  width: 90px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.language-select:hover {
+  border-color: #007bff;
+}
+
+.language-select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+

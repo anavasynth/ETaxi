@@ -12,8 +12,8 @@
   <div class="container">
     <div class="left-section">
       <img src="/static/img/logo.png" alt="eTaxi Logo" class="logo"/>
-      <h1>Book an eco-friendly taxi now!</h1>
-      <p>Fast, reliable, and sustainable rides at your fingertips</p>
+      <h1 data-i18n="main_text_head">Book an eco-friendly taxi now!</h1>
+      <p data-i18n="main_text_p">Fast, reliable, and sustainable rides at your fingertips</p>
  <form action="/route_details" method="GET">
   <input type="text" placeholder="Enter pickup location" name="pickup" />
   <input type="text" placeholder="Enter destination" name="destination" />
@@ -22,10 +22,15 @@
     </div>
     <div class="right-section">
       <nav class="nav">
-        <a href="#">Home</a>
-        <a href="#about_us">About</a>
-        <a href="#">Contact</a>
-        <button class="ride-btn">Get a Ride</button>
+        <a data-i18n="nav_home" href="#">Home</a>
+        <a data-i18n="nav_about" href="#about_us">About</a>
+        <a data-i18n="nav_contact" href="#">Contact</a>
+        <button data-i18n="get_a_ride" class="ride-btn">Get a Ride</button>
+<select id="languageSelect" class="language-select">
+  <option value="en">🇬🇧 EN</option>
+  <option value="uk">🇺🇦 UK</option>
+  <option value="pl">🇵🇱 PL</option>
+</select>
       </nav>
       <img src="/static/img/taxi.png" alt="Eco Taxi" class="taxi-img"/>
     </div>
@@ -254,4 +259,5 @@
   </div>
 </footer>
 </body>
+<script src="/static/lang.js" defer></script>
 </html>
