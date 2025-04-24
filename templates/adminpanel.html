@@ -28,6 +28,9 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="transfers-tab" data-bs-toggle="tab" data-bs-target="#transfers" type="button" role="tab">Transfers</button>
         </li>
+        <li class="nav-item" role="presentation">
+  <button class="nav-link" id="drivers-tab" data-bs-toggle="tab" data-bs-target="#drivers" type="button" role="tab">Drivers</button>
+</li>
     </ul>
 
     <!-- Tab content -->
@@ -59,10 +62,15 @@
                         <td>{{ ride.payment_status }}</td>
                         <td>{{ ride.payment_id }}</td>
                         <td>
-                            <select class="form-select">
-                                <option>Driver1</option>
-                                <option>Driver2</option>
-                                <option>Driver3</option>
+                            <select class="form-select driver-select" data-ride-id="{{ ride.id }}">
+                            <!-- Якщо драйвер не встановлений — вибрано прочерк -->
+                            <option value="" disabled {% if not ride.driver %}selected{% endif %}>— Оберіть водія —</option>
+                            {% for driver in drivers %}
+                            <option value="{{ driver.id }}"
+                                {% if ride.driver == driver.first_name ~ ' ' ~ driver.last_name %} selected {% endif %}>
+                                {{ driver.first_name }} {{ driver.last_name }}
+                            </option>
+                            {% endfor %}
                             </select>
                         </td>
                         <td>{{ ride.created_at }}</td>
@@ -103,10 +111,15 @@
                         <td>{{ transfer.payment_status }}</td>
                         <td>{{ transfer.payment_id }}</td>
                         <td>
-                            <select class="form-select">
-                                <option>Driver1</option>
-                                <option>Driver2</option>
-                                <option>Driver3</option>
+                            <select class="form-select driver-select" data-transfer-id="{{ transfer.id }}">
+                            <!-- Якщо драйвер не встановлений — вибрано прочерк -->
+                            <option value="" disabled {% if not transfer.driver %}selected{% endif %}>— Оберіть водія —</option>
+                            {% for driver in drivers %}
+                            <option value="{{ driver.id }}"
+                                {% if transfer.driver == driver.first_name ~ ' ' ~ driver.last_name %} selected {% endif %}>
+                                {{ driver.first_name }} {{ driver.last_name }}
+                            </option>
+                            {% endfor %}
                             </select>
                         </td>
                         <td>{{ transfer.created_at }}</td>
@@ -115,8 +128,173 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="tab-pane fade" id="drivers" role="tabpanel">
+  <div class="d-flex justify-content-between mb-2">
+    <h4>Drivers</h4>
+    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addDriverModal">Add Driver</button>
+  </div>
+
+  <table class="table table-bordered table-hover">
+    <thead class="table-light">
+      <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Phone</th>
+        <th>Car</th>
+        <th>Class</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for driver in drivers %}
+      <tr>
+        <td>{{ driver.id }}</td>
+        <td>{{ driver.first_name }}</td>
+        <td>{{ driver.last_name }}</td>
+        <td>{{ driver.phone }}</td>
+        <td>{{ driver.driver_car }}</td>
+        <td>{{ driver.car_class }}</td>
+        <td>
+          <!-- Edit -->
+          <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editDriverModal{{ driver.id }}">Edit</button>
+          <!-- Delete -->
+          <form action="{{ url_for('admin.delete_driver', driver_id=driver.id) }}" method="POST" style="display:inline;">
+            <button class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+          </form>
+        </td>
+      </tr>
+
+      <!-- Edit Modal -->
+      <div class="modal fade" id="editDriverModal{{ driver.id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <form method="POST" action="{{ url_for('admin.update_driver', driver_id=driver.id) }}">
+            <div class="modal-content">
+              <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Edit Driver</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <input type="text" class="form-control mb-2" name="first_name" value="{{ driver.first_name }}" required>
+                <input type="text" class="form-control mb-2" name="last_name" value="{{ driver.last_name }}" required>
+                <input type="text" class="form-control mb-2" name="phone" value="{{ driver.phone }}" required>
+                <input type="text" class="form-control mb-2" name="driver_car" value="{{ driver.driver_car }}" required>
+                <input type="text" class="form-control mb-2" name="car_class" value="{{ driver.car_class }}" required>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
     </div>
 
+    <!-- Confirm Driver Modal -->
+<div class="modal fade" id="confirmDriverModal" tabindex="-1" aria-labelledby="confirmDriverModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Підтвердження вибору водія</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        Ви впевнені, що хочете призначити <strong id="selectedDriverName"></strong>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+        <button type="button" class="btn btn-primary" id="confirmDriverBtn">Підтвердити</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div class="modal fade" id="addDriverModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form method="POST" action="{{ url_for('admin.add_driver') }}">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title">Add Driver</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" class="form-control mb-2" name="first_name" placeholder="First Name" required>
+          <input type="text" class="form-control mb-2" name="last_name" placeholder="Last Name" required>
+          <input type="text" class="form-control mb-2" name="phone" placeholder="Phone" required>
+          <input type="text" class="form-control mb-2" name="driver_car" placeholder="Driver Car" required>
+          <input type="text" class="form-control mb-2" name="car_class" placeholder="Car Class" required>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Add Driver</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+let selectedDriverId = null;
+let selectedDriverName = '';
+let selectedRideId = null;
+let selectedTransferId = null;
+let previousSelect = null;
+let previousValue = null;
+
+document.querySelectorAll('.driver-select').forEach(select => {
+    select.addEventListener('focus', function () {
+        previousValue = this.value;
+    });
+
+    select.addEventListener('change', function () {
+        selectedDriverId = this.value;
+        selectedDriverName = this.options[this.selectedIndex].text;
+
+        // Окремо беремо ride_id або transfer_id
+        selectedRideId = this.dataset.rideId ? this.dataset.rideId : null;
+        selectedTransferId = this.dataset.transferId ? this.dataset.transferId : null;
+
+        previousSelect = this;
+
+        document.getElementById('selectedDriverName').textContent = selectedDriverName;
+        const modal = new bootstrap.Modal(document.getElementById('confirmDriverModal'));
+        modal.show();
+    });
+});
+
+document.getElementById('confirmDriverBtn').addEventListener('click', function () {
+    fetch('/assign-driver', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            driver_id: selectedDriverId,
+            ride_id: selectedRideId,  // Тепер передаємо лише, якщо є
+            transfer_id: selectedTransferId // Передаємо також transfer_id
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Driver assigned:', data);
+        bootstrap.Modal.getInstance(document.getElementById('confirmDriverModal')).hide();
+    });
+});
+
+// Скасування вибору — повернення до попереднього значення
+document.querySelector('#confirmDriverModal .btn-secondary').addEventListener('click', function () {
+    if (previousSelect && previousValue !== null) {
+        previousSelect.value = previousValue;
+    }
+});
+</script>
 </body>
 </html>
