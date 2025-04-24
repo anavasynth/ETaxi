@@ -1,0 +1,43 @@
+<!-- Modal для замовлення трансферу -->
+<div class="modal fade" id="transferModal" tabindex="-1" aria-labelledby="transferModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="transferModalLabel">Замовлення трансферу</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити"></button>
+      </div>
+      <div class="modal-body">
+        <form id="transferForm">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" required>
+          </div>
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Прізвище</label>
+            <input type="text" class="form-control" id="lastName" required>
+          </div>
+          <div class="mb-3">
+            <label for="firstName" class="form-label">Ім'я</label>
+            <input type="text" class="form-control" id="firstName" required>
+          </div>
+          <div class="mb-3">
+            <label for="seats" class="form-label">Кількість місць</label>
+            <select class="form-select" id="seats" required>
+              <option value="1-3">1–3 people</option>
+              <option value="4-6">4–6 people</option>
+              <option value="6-8">6–8 people</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="price" class="form-label">Ціна</label>
+            <input type="text" class="form-control" id="price" readonly>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+        <button type="button" class="btn btn-success" id="payTransferBtn">Оплатити</button>
+      </div>
+    </div>
+  </div>
+</div>

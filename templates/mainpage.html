@@ -14,11 +14,11 @@
       <img src="/static/img/logo.png" alt="eTaxi Logo" class="logo"/>
       <h1>Book an eco-friendly taxi now!</h1>
       <p>Fast, reliable, and sustainable rides at your fingertips</p>
-      <form>
-        <input type="text" placeholder="Enter pickup location" />
-        <input type="text" placeholder="Enter destination" />
-        <button type="submit">Request ride</button>
-      </form>
+ <form action="/route_details" method="GET">
+  <input type="text" placeholder="Enter pickup location" name="pickup" />
+  <input type="text" placeholder="Enter destination" name="destination" />
+  <button type="submit">Request ride</button>
+</form>
     </div>
     <div class="right-section">
       <nav class="nav">
