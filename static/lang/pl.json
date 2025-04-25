@@ -1,12 +1,27 @@
 {
   "main_text_head": "Zarezerwuj ekologiczną taksówkę już teraz!",
   "main_text_p": "Szybkie, niezawodne i ekologiczne przejazdy na wyciągnięcie ręki",
-
   "nav_home": "Glowna",
   "nav_about": "O nas",
   "nav_contact": "Kontakt",
-
   "get_a_ride": "Podjechać",
-
-  "confirm": "Confirm"
+  "confirm": "Potwierdź",
+  "pickup_placeholder": "Wprowadź miejsce odbioru",
+  "destination_placeholder": "Wprowadź miejsce docelowe",
+  "request_ride": "Zamów przejazd",
+  "about_label": "O nas",
+  "about_title": "Ulepsz swoje podróże z eTaxi",
+  "about_desc": "Ulepsz swoje doświadczenie podróży z szybkimi, niezawodnymi i ekologicznymi przejazdami.",
+  "feature_drivers": "Profesjonalni Kierowcy",
+  "feature_drivers_desc": "Nasi kierowcy są doświadczeni i dobrze wyszkoleni, aby zapewnić Twoje bezpieczeństwo i komfort.",
+  "services_label": "Nasze Usługi",
+  "services_title": "Zwiększ swoje doświadczenie z naszymi usługami",
+  "services_transfer_title": "Transfery",
+  "services_transfer_desc": "Czy potrzebujesz transferu na lotnisko czy przejazdu na specjalne wydarzenie, nasze usługi transferowe są niezawodne i wygodne.",
+  "learn_more": "Dowiedz się więcej",
+  "services_taxi_title": "Taxi",
+  "services_taxi_desc": "Nasze usługi taksówkowe oferują wygodny i efektywny sposób poruszania się po mieście.",
+  "services_bottom_desc": "Nasze usługi zostały zaprojektowane, aby sprostać wszystkim Twoim potrzebom transportowym. Czy potrzebujesz szybkiej przejażdżki po mieście, niezawodnego transferu na lotnisko czy wygodnej taksówki na specjalne wydarzenie, mamy to dla Ciebie. Nasi profesjonalni kierowcy zapewniają Twoje bezpieczeństwo i komfort przez całą podróż.",
+  "go_to_transfers": "Przejdź do transferów",
+  "why_choose_us": "Dlaczego my?"
 }

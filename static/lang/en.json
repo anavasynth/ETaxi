@@ -1,11 +1,29 @@
 {
   "main_text_head": "Book an eco-friendly taxi now!",
   "main_text_p": "Fast, reliable, and sustainable rides at your fingertips",
-
   "nav_home": "Home",
   "nav_about": "About",
   "nav_contact": "Contact",
-
   "get_a_ride": "Get a Ride",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "pickup_placeholder": "Enter pickup location",
+  "destination_placeholder": "Enter destination",
+  "request_ride": "Request ride",
+  "about_label": "About Us",
+  "about_title": "Empowering Your Travel Experience with eTaxi",
+  "about_desc": "Empowering your travel experience with fast, reliable, and eco-friendly rides.",
+  "feature_drivers": "Professional Drivers",
+  "feature_drivers_desc": "Our drivers are experienced and well-trained to ensure your safety and comfort.",
+  "services_label": "Our Services",
+  "services_title": "Elevate Your Experience with Our Services",
+  "services_transfer_title": "Transfers",
+  "services_transfer_desc": "Whether you need an airport transfer or a ride to a special event, our transfer services are reliable and convenient.",
+  "learn_more": "Learn More",
+  "services_taxi_title": "Taxi",
+  "services_taxi_desc": "Our taxi services offer a comfortable and efficient way to get around the city.",
+
+  "services_bottom_desc": "Our services are designed to meet all your transportation needs. Whether you need a quick ride across town, a reliable airport transfer, or a comfortable taxi for a special event, we've got you covered. Our professional drivers ensure your safety and comfort throughout the journey.",
+
+  "go_to_transfers": "Go to Transfers",
+  "why_choose_us": "Why Choose Us?"
 }
