@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.getElementById('payTransferBtn').addEventListener('click', async () => {
   const email = document.getElementById('email').value;
-  const lastName = document.getElementById('lastName').value;
   const firstName = document.getElementById('firstName').value;
+  const phone = document.getElementById('phone').value;
   const seats = document.getElementById('seats').value;
   const price = document.getElementById('price').value;
   const transfer = document.getElementById('transferModalLabel').textContent.split(': ')[1];
@@ -44,7 +44,7 @@ document.getElementById('payTransferBtn').addEventListener('click', async () => 
     const response = await fetch('/create-transfer-order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, lastName, firstName, seats, price, transfer })
+      body: JSON.stringify({ firstName, email, phone, seats, price, transfer })
     });
 
     const responseText = await response.text();

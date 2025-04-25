@@ -42,8 +42,11 @@
                     <tr>
                         <th>ID</th>
                         <th>First Name</th>
-                        <th>Car Class</th>
+                        <th>Email</th>
                         <th>Phone</th>
+                        <th>Car Class</th>
+                        <th>Start</th>
+                        <th>End</th>
                         <th>Price</th>
                         <th>Payment Status</th>
                         <th>Payment ID</th>
@@ -56,8 +59,11 @@
                     <tr class="{% if ride.payment_status == 'completed' %}table-success{% endif %}">
                         <td>{{ ride.id }}</td>
                         <td>{{ ride.first_name }}</td>
-                        <td>{{ ride.car_class }}</td>
+                        <td>{{ ride.email }}</td>
                         <td>{{ ride.phone }}</td>
+                        <td>{{ ride.car_class }}</td>
+                        <td>{{ ride.start_address }}</td>
+                        <td>{{ ride.end_address }}</td>
                         <td>{{ ride.price }}</td>
                         <td>{{ ride.payment_status }}</td>
                         <td>{{ ride.payment_id }}</td>
@@ -86,9 +92,9 @@
                 <thead class="table-light">
                     <tr>
                         <th>ID</th>
-                        <th>Email</th>
-                        <th>Last Name</th>
                         <th>First Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
                         <th>Seats</th>
                         <th>Price</th>
                         <th>Transfer</th>
@@ -102,9 +108,9 @@
                     {% for transfer in transfers %}
                     <tr class="{% if transfer.payment_status == 'completed' %}table-success{% endif %}">
                         <td>{{ transfer.id }}</td>
-                        <td>{{ transfer.email }}</td>
-                        <td>{{ transfer.last_name }}</td>
                         <td>{{ transfer.first_name }}</td>
+                        <td>{{ transfer.email }}</td>
+                        <td>{{ transfer.phone }}</td>
                         <td>{{ transfer.seats }}</td>
                         <td>{{ transfer.price }}</td>
                         <td>{{ transfer.transfer }}</td>
@@ -144,6 +150,7 @@
         <th>Phone</th>
         <th>Car</th>
         <th>Class</th>
+        <th>Car Number</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -156,6 +163,7 @@
         <td>{{ driver.phone }}</td>
         <td>{{ driver.driver_car }}</td>
         <td>{{ driver.car_class }}</td>
+        <td>{{ driver.car_number }}</td>
         <td>
           <!-- Edit -->
           <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editDriverModal{{ driver.id }}">Edit</button>
@@ -181,6 +189,7 @@
                 <input type="text" class="form-control mb-2" name="phone" value="{{ driver.phone }}" required>
                 <input type="text" class="form-control mb-2" name="driver_car" value="{{ driver.driver_car }}" required>
                 <input type="text" class="form-control mb-2" name="car_class" value="{{ driver.car_class }}" required>
+                <input type="text" class="form-control mb-2" name="car_number" value="{{ driver.car_number }}" required>
               </div>
               <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -229,6 +238,7 @@
           <input type="text" class="form-control mb-2" name="phone" placeholder="Phone" required>
           <input type="text" class="form-control mb-2" name="driver_car" placeholder="Driver Car" required>
           <input type="text" class="form-control mb-2" name="car_class" placeholder="Car Class" required>
+          <input type="text" class="form-control mb-2" name="car_number" placeholder="Car Number" required>
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-success">Add Driver</button>

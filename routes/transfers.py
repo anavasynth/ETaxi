@@ -43,9 +43,9 @@ def transfer_city_transfer():
 @transfers_bp.route('/create-transfer-order', methods=['POST'])
 def create_transfer_order():
     data = request.json
-    email = data.get('email')
-    last_name = data.get('lastName')
     first_name = data.get('firstName')
+    email = data.get('email')
+    phone = data.get('phone')
     seats = data.get('seats')
     price = data.get('price')
     transfer = data.get('transfer')
@@ -54,9 +54,9 @@ def create_transfer_order():
         price = price.replace('PLN', '').strip()
 
     new_transfer = Transfer(
-        email=email,
-        last_name=last_name,
         first_name=first_name,
+        email = email,
+        phone = phone,
         seats=seats,
         price=price,
         transfer=transfer,

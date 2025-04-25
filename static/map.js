@@ -13,9 +13,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!currentInputType) return;
     const latlng = e.latlng;
     setMarker(currentInputType, latlng, currentInputType === 'start' ? 'Посадка (з карти)' : 'Висадка (з карти)');
-    document.getElementById(currentInputType).value = `${latlng.lat.toFixed(5)}, ${latlng.lng.toFixed(5)}`;
+    reverseGeocode(latlng.lat, latlng.lng, currentInputType);
     currentInputType = null;
   });
+
+  function reverseGeocode(lat, lng, inputId) {
+  const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const address = data.display_name || `${lat}, ${lng}`;
+      document.getElementById(inputId).value = address;
+    })
+    .catch(error => {
+      console.error("Reverse geocoding error:", error);
+      document.getElementById(inputId).value = `${lat}, ${lng}`;
+    });
+}
 
   function setMarker(type, latlng, label) {
     if (type === 'start') {

@@ -105,8 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.getElementById('confirmRouteBtn').addEventListener('click', async () => {
     const firstName = document.getElementById('confirmFirstName').value;
+    const email = document.getElementById('confirmEmail').value;
     const phone = document.getElementById('confirmPhone').value;
     const selectedClass = document.querySelector('.ride-class-option.selected');
+
+    const startAddress = window.startAddress || document.getElementById('start').value;
+    const endAddress = window.endAddress || document.getElementById('end').value;
 
     const carClass = selectedClass.dataset.value;
 
@@ -114,7 +118,7 @@ document.getElementById('confirmRouteBtn').addEventListener('click', async () =>
         const response = await fetch('/create-route-order', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ firstName, phone, price: window.calculatedPrice, carClass })
+            body: JSON.stringify({ firstName, email, phone, price: window.calculatedPrice, carClass, startAddress, endAddress })
         });
 
         const responseText = await response.text();

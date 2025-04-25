@@ -29,15 +29,23 @@ def create_route_order():
     data = request.json
     print("data create:", data)
     first_name = data.get('firstName')
+    email = data.get('email')
     phone = data.get('phone')
     price = data.get('price')
     car_class = data.get('carClass')
 
+    start_address = data.get('startAddress')
+    end_address = data.get('endAddress')
+
     new_ride = Ride(
         first_name=first_name,
         phone=phone,
+        email=email,
         price=price,
         car_class=car_class,
+
+        start_address=start_address,
+        end_address=end_address,
         payment_status='pending'
     )
     db.session.add(new_ride)

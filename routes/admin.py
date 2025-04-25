@@ -19,7 +19,8 @@ def add_driver():
         last_name=data['last_name'],
         phone=data['phone'],
         driver_car=data['driver_car'],
-        car_class=data['car_class']
+        car_class=data['car_class'],
+        car_number=data['car_number'],
     )
     db.session.add(driver)
     db.session.commit()
@@ -42,6 +43,7 @@ def update_driver(driver_id):
         driver.phone = request.form['phone']
         driver.driver_car = request.form['driver_car']
         driver.car_class = request.form['car_class']
+        driver.car_number = request.form['car_number']
         db.session.commit()
     return redirect(url_for('admin.adminpanel'))
 
