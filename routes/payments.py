@@ -66,7 +66,7 @@ def stripe_webhook():
                     - Ім'я: {ride.first_name}
                     - Телефон: {ride.phone}
                     - Email: {ride.email}
-                    - Дата та час: {ride.date_time}
+                    - Дата та час: {ride.created_at}
                     - Інші деталі: ...
 
                     Ми з вами скоро зв'яжемося!
@@ -77,7 +77,7 @@ def stripe_webhook():
                     - Ім'я: {ride.first_name}
                     - Телефон: {ride.phone}
                     - Email: {ride.email}
-                    - Дата та час: {ride.date_time}
+                    - Дата та час: {ride.created_at}
                     - Інші деталі: ...
                     """
 
