@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Нове замовлення</title>
+</head>
+<body style="background-color: #f1f8e9; font-family: Arial, sans-serif; padding: 20px;">
+    <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        <div style="text-align: center;">
+            <img src="{{ logo_url }}" alt="Logo" style="max-width: 120px; margin-bottom: 20px;">
+        </div>
+        <h2 style="color: #33691e;">НОВЕ ЗАМОВЛЕННЯ</h2>
+        <p>Деталі замовлення:</p>
+        <ul>
+            <li><strong>Ім'я:</strong> {{ customer_name }}</li>
+            <li><strong>Телефон:</strong> {{ phone }}</li>
+            <li><strong>Email:</strong> {{ email }}</li>
+            <li><strong>Дата та час:</strong> {{ date_time }}</li>
+            <li><strong>Тип:</strong> {{ type }}</li>
+        </ul>
+        <p>Перевірте замовлення якнайшвидше.</p>
+    </div>
+</body>
+</html>
