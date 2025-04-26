@@ -64,8 +64,7 @@ def stripe_webhook():
                     "customer_name": ride.first_name ,
                     "phone": ride.phone ,
                     "email": ride.email ,
-                    "date_time": ride.created_at ,
-                    "logo_url": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fx.com%2Fetaxitn&psig=AOvVaw0NuHxFCEyNn7t-Ge_ibMWI&ust=1745794808002000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCMC71M_m9owDFQAAAAAdAAAAABAJ" ,  # Сюди лінк на лого!
+                    "date_time": ride.created_at,
                     "type": "Поїздка"  # або "Трансфер"
                 }
 
