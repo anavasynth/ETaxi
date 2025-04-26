@@ -2,10 +2,15 @@
 from flask import Flask
 from config import Config
 from models import db
+from flask_mail import Mail
+
+mail = Mail()
 
 def create_app():
     app = Flask(__name__, template_folder='templates')
     app.config.from_object(Config)
+
+    mail.init_app(app)
 
     db.init_app(app)
 

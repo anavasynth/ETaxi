@@ -4,6 +4,7 @@ import stripe
 from models import db, Ride, Transfer
 from config import Config
 from datetime import datetime
+from helpers.email_utils import send_email
 
 payments_bp = Blueprint('payments', __name__)
 
@@ -53,6 +54,36 @@ def stripe_webhook():
                 ride.payment_status = 'completed'
                 ride.payment_id = payment_id
                 db.session.commit()
+
+                # --- Після успішної оплати відправити листи ---
+                subject = "Підтвердження замовлення"
+                operator_subject = f"Нове замовлення #{ride.id}"
+
+                client_body = f"""
+                    Дякуємо за ваше замовлення!
+
+                    Інформація про поїздку:
+                    - Ім'я: {ride.first_name}
+                    - Телефон: {ride.phone}
+                    - Email: {ride.email}
+                    - Дата та час: {ride.date_time}
+                    - Інші деталі: ...
+
+                    Ми з вами скоро зв'яжемося!
+                    """
+
+                operator_body = f"""
+                    НОВЕ ЗАМОВЛЕННЯ:
+                    - Ім'я: {ride.first_name}
+                    - Телефон: {ride.phone}
+                    - Email: {ride.email}
+                    - Дата та час: {ride.date_time}
+                    - Інші деталі: ...
+                    """
+
+                send_email(subject , [ride.email] , client_body)
+                send_email(operator_subject , [Config.OPERATOR_EMAIL] , operator_body)
+
                 log_to_file(f"Ride #{order_id} updated in DB.")
                 print(f"Ride #{order_id} updated in DB.")
 
@@ -66,6 +97,36 @@ def stripe_webhook():
                 transfer.payment_status = 'completed'
                 transfer.payment_id = payment_id
                 db.session.commit()
+
+                # --- Після успішної оплати відправити листи ---
+                subject = "Підтвердження замовлення"
+                operator_subject = f"Нове замовлення #{transfer.id}"
+
+                client_body = f"""
+                                    Дякуємо за ваше замовлення!
+
+                                    Інформація про трансфер:
+                                    - Ім'я: {transfer.first_name}
+                                    - Телефон: {transfer.phone}
+                                    - Email: {transfer.email}
+                                    - Дата та час: {transfer.date_time}
+                                    - Інші деталі: ...
+
+                                    Ми з вами скоро зв'яжемося!
+                                    """
+
+                operator_body = f"""
+                                    НОВЕ ЗАМОВЛЕННЯ:
+                                    - Ім'я: {transfer.first_name}
+                                    - Телефон: {transfer.phone}
+                                    - Email: {transfer.email}
+                                    - Дата та час: {transfer.date_time}
+                                    - Інші деталі: ...
+                                    """
+
+                send_email(subject , [transfer.email] , client_body)
+                send_email(operator_subject , [Config.OPERATOR_EMAIL] , operator_body)
+
                 log_to_file(f"Transfer #{transfer_id} updated in DB.")
                 print(f"Transfer #{transfer_id} updated in DB.")
 
