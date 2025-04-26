@@ -59,30 +59,22 @@ def stripe_webhook():
                 subject = "Підтвердження замовлення"
                 operator_subject = f"Нове замовлення #{ride.id}"
 
-                client_body = f"""
-                    Дякуємо за ваше замовлення!
+                # Підготувати дані для підставлення
+                context = {
+                    "customer_name": ride.first_name ,
+                    "phone": ride.phone ,
+                    "email": ride.email ,
+                    "date_time": ride.created_at ,
+                    "type": "Поїздка"  # або "Трансфер"
+                }
 
-                    Інформація про поїздку:
-                    - Ім'я: {ride.first_name}
-                    - Телефон: {ride.phone}
-                    - Email: {ride.email}
-                    - Дата та час: {ride.created_at}
-                    - Інші деталі: ...
+                # Зрендерити шаблони
+                client_body = render_template('client_email.html' , **context)
+                operator_body = render_template('operator_email.html' , **context)
 
-                    Ми з вами скоро зв'яжемося!
-                    """
-
-                operator_body = f"""
-                    НОВЕ ЗАМОВЛЕННЯ:
-                    - Ім'я: {ride.first_name}
-                    - Телефон: {ride.phone}
-                    - Email: {ride.email}
-                    - Дата та час: {ride.created_at}
-                    - Інші деталі: ...
-                    """
-
-                send_email(subject , [ride.email] , client_body)
-                send_email(operator_subject , [Config.OPERATOR_EMAIL] , operator_body)
+                # Надіслати листи
+                send_email(subject , [ride.email] , html_body = client_body)
+                send_email(operator_subject , [Config.OPERATOR_EMAIL] , html_body = operator_body)
 
                 log_to_file(f"Ride #{order_id} updated in DB.")
                 print(f"Ride #{order_id} updated in DB.")
