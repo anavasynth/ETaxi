@@ -49,8 +49,9 @@
 .ride-map-wrapper {
   flex-grow: 1;
   position: relative;
-  min-width: 0; /* важливо для правильного розтягування */
-  max-width: calc(100vw - 280px); /* не більше, ніж лишилось */
+  min-width: 0; /* Ensures it doesn't shrink or collapse */
+  max-width: 100%; /* Allow map to take up full available width */
+  height: 100%; /* Make sure it takes full available height */
 }
 
 .ride-map {
@@ -113,19 +114,24 @@
     }
 
 @media (max-width: 768px) {
-  #ride {
-    flex-direction: column;
+  .ride-section {
+    flex-direction: column;  /* Stack the panels on top of each other */
   }
 
   .ride-panel, .ride-map-wrapper {
     width: 100%;
   }
 
-  .ride-panel {
-    padding: 2rem 1rem;
-  }
-
   .ride-map {
     height: 300px;
+    width: 90%;
+    border-radius: 10px;  /* Optionally adjust the border-radius */
+    margin: 20px auto;  /* Центруємо карту по горизонталі */
+    border: 3px solid #218838;  /* Remove the border if it looks odd */
+  }
+
+  .map-info-box {
+    max-width: 100%;
+    left: 10px;  /* Adjust for smaller screens */
   }
 }
