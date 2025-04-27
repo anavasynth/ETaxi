@@ -113,6 +113,11 @@
       border-radius: 10px;
     }
 
+  #confirmAlertButton {
+    width: 100%; /* Makes the button take up full width */
+    text-align: center; /* Centers the text inside the button */
+  }
+
 @media (max-width: 768px) {
   .ride-section {
     flex-direction: column;  /* Stack the panels on top of each other */

@@ -81,12 +81,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const selectedClass = document.querySelector('.ride-class-option.selected');
 
   if (!startInput || !endInput) {
-    alert('Будь ласка, введіть обидві адреси.');
+    showModalAlert('Будь ласка, введіть обидві адреси.')
     return;
   }
 
   if (!selectedClass) {
-    alert('Оберіть клас авто.');
+    showModalAlert('Оберіть клас авто.');
     return;
   }
 
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const endCoords = window.endCoords;
 
   if (!startCoords || !endCoords) {
-    alert('Будь ласка, оберіть точки на мапі.');
+    showModalAlert('Будь ласка, оберіть точки на мапі.');
     return;
   }
 
@@ -132,7 +132,6 @@ document.getElementById('confirmRouteBtn').addEventListener('click', async () =>
             if (data.status === 'success') {
                 const orderId = data.id;
 
-                alert('Замовлення успішно створено!');
                 const modal = bootstrap.Modal.getInstance(document.getElementById('confirmRouteModal'));
                 modal.hide();
 
@@ -170,4 +169,13 @@ document.getElementById('confirmRouteBtn').addEventListener('click', async () =>
         alert('Сталася помилка: ' + error.message);
     }
 });
+
+function showModalAlert(message) {
+  // Set the modal message
+  document.getElementById('modalAlertMessage').innerText = message;
+
+  // Show the modal
+  const alertModal = new bootstrap.Modal(document.getElementById('genericModal'));
+  alertModal.show();
+}
 });

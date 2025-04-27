@@ -3,9 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentInputType = window.currentInputType;
 
   function enableMapClick(type) {
-    currentInputType = type;
-    alert(`Натисніть на карту, щоб вибрати точку для ${type === 'start' ? 'посадки' : 'висадки'}.`);
-  }
+  currentInputType = type;
+
+  // Change modal message depending on the type
+  const message = `Натисніть на карту, щоб вибрати точку для ${type === 'start' ? 'посадки' : 'висадки'}.`;
+
+  showModalAlert(message);
+}
 
   window.enableMapClick = enableMapClick;
 
@@ -77,4 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.searchLocation = searchLocation;
+
+  function showModalAlert(message) {
+  // Set the modal message
+  document.getElementById('modalAlertMessage').innerText = message;
+
+  // Show the modal
+  const alertModal = new bootstrap.Modal(document.getElementById('genericModal'));
+  alertModal.show();
+}
 });
