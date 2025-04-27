@@ -64,8 +64,11 @@ def stripe_webhook():
                     "customer_name": ride.first_name ,
                     "phone": ride.phone ,
                     "email": ride.email ,
+                    "start_address": ride.start_address ,
+                    "end_address": ride.end_address ,
                     "date_time": ride.created_at ,
-                    "type": "Поїздка"  # або "Трансфер"
+                    "price": ride.price ,
+                    "type": "Ride"  # або "Трансфер"
                 }
 
                 # Зрендерити шаблони
@@ -94,30 +97,24 @@ def stripe_webhook():
                 subject = "Підтвердження замовлення"
                 operator_subject = f"Нове замовлення #{transfer.id}"
 
-                client_body = f"""
-                                    Дякуємо за ваше замовлення!
+                # Підготувати дані для підставлення
+                context = {
+                    "customer_name": transfer.first_name ,
+                    "phone": transfer.phone ,
+                    "email": transfer.email ,
+                    "transfer": transfer.transfer ,
+                    "price": transfer.price ,
+                    "date_time": transfer.created_at ,
+                    "type": "Transfer"  # або "Трансфер"
+                }
 
-                                    Інформація про трансфер:
-                                    - Ім'я: {transfer.first_name}
-                                    - Телефон: {transfer.phone}
-                                    - Email: {transfer.email}
-                                    - Дата та час: {transfer.date_time}
-                                    - Інші деталі: ...
+                # Зрендерити шаблони
+                client_body = render_template('client_email.html' , **context)
+                operator_body = render_template('operator_email.html' , **context)
 
-                                    Ми з вами скоро зв'яжемося!
-                                    """
-
-                operator_body = f"""
-                                    НОВЕ ЗАМОВЛЕННЯ:
-                                    - Ім'я: {transfer.first_name}
-                                    - Телефон: {transfer.phone}
-                                    - Email: {transfer.email}
-                                    - Дата та час: {transfer.date_time}
-                                    - Інші деталі: ...
-                                    """
-
-                send_email(subject , [transfer.email] , client_body)
-                send_email(operator_subject , [Config.OPERATOR_EMAIL] , operator_body)
+                # Надіслати листи
+                send_email(subject , [transfer.email] , html_body = client_body)
+                send_email(operator_subject , [Config.OPERATOR_EMAIL] , html_body = operator_body)
 
                 log_to_file(f"Transfer #{transfer_id} updated in DB.")
                 print(f"Transfer #{transfer_id} updated in DB.")

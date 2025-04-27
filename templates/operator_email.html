@@ -14,6 +14,13 @@
             <li><strong>Ім'я:</strong> {{ customer_name }}</li>
             <li><strong>Телефон:</strong> {{ phone }}</li>
             <li><strong>Email:</strong> {{ email }}</li>
+            {% if type == 'Ride' %}
+            <li><strong>Пункт відправлення:</strong> {{ start_address }}</li>
+            <li><strong>Пункт призначення:</strong> {{ end_address }}</li>
+            {% elif type == 'Transfer' %}
+            <li><strong>Трансфер:</strong> {{ transfer }}</li>
+            {% endif %}
+            <li><strong>Ціна:</strong> {{ price }} грн</li>
             <li><strong>Дата та час:</strong> {{ date_time }}</li>
             <li><strong>Тип:</strong> {{ type }}</li>
         </ul>
