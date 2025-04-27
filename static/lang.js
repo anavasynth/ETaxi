@@ -13,6 +13,12 @@ if (languageSelect) {
     });
 }
 
+// Функція для оновлення динамічного контенту з локалізацією
+function updateDynamicLocalization() {
+    const currentLang = localStorage.getItem('language') || 'en';
+    loadLanguage(currentLang);
+}
+
 // Завантаження мови при завантаженні сторінки
 loadLanguage(currentLang);
 

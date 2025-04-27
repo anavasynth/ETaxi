@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
         `🚗 <b data-i18n="rd_route_len">Довжина маршруту:</b> ${distance.toFixed(2)} км<br>` +
         `💰 <b data-i18n="rd_tariff">Тариф:</b> ${tariffInfo.name} (${tariffInfo.rate.toFixed(2)} PLN/км)<br>` +
         `🧾 <b data-i18n="rd_price">Вартість:</b> ${price.toFixed(2)} PLN`;
+
+      updateDynamicLocalization();
     } catch (error) {
       console.error('Error fetching route:', error);
       document.getElementById('distance').innerText = 'Помилка при розрахунку маршруту';

@@ -130,8 +130,13 @@
     border: 3px solid #218838;  /* Remove the border if it looks odd */
   }
 
+  /* Розміщення map-info-box нижче карти */
   .map-info-box {
-    max-width: 100%;
-    left: 10px;  /* Adjust for smaller screens */
+    width: 90%;
+    position: relative;  /* зміна з absolute на relative */
+    bottom: auto;  /* прибрати прив'язку до нижньої частини */
+    left: 0;
+    margin-top: 20px; /* Додати відступ, щоб блок був нижче карти */
+    font-size: 14px; /* Можна також змінити розмір шрифта */
   }
 }
