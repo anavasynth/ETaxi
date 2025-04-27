@@ -111,3 +111,21 @@
       padding: 1rem;
       border-radius: 10px;
     }
+
+@media (max-width: 768px) {
+  #ride {
+    flex-direction: column;
+  }
+
+  .ride-panel, .ride-map-wrapper {
+    width: 100%;
+  }
+
+  .ride-panel {
+    padding: 2rem 1rem;
+  }
+
+  .ride-map {
+    height: 300px;
+  }
+}

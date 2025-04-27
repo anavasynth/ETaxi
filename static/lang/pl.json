@@ -23,5 +23,18 @@
   "services_taxi_desc": "Nasze usługi taksówkowe oferują wygodny i efektywny sposób poruszania się po mieście.",
   "services_bottom_desc": "Nasze usługi zostały zaprojektowane, aby sprostać wszystkim Twoim potrzebom transportowym. Czy potrzebujesz szybkiej przejażdżki po mieście, niezawodnego transferu na lotnisko czy wygodnej taksówki na specjalne wydarzenie, mamy to dla Ciebie. Nasi profesjonalni kierowcy zapewniają Twoje bezpieczeństwo i komfort przez całą podróż.",
   "go_to_transfers": "Przejdź do transferów",
-  "why_choose_us": "Dlaczego my?"
+  "why_choose_us": "Dlaczego my?",
+
+  "rd_route_len": "Długość trasy",
+  "rd_tariff": "Taryfa",
+  "rd_price": "Koszt",
+  "rd_route_details": "Szczegóły trasy",
+  "rd_choose_class": "Wybierz klasę",
+  "rd_confirm_order": "Potwierdź zamówienie",
+  "rd_cancel": "Anuluj",
+  "rd_confirm_route": "Potwierdzenie trasy",
+  "rd_form_name": "Imię",
+  "rd_form_phone": "Numer telefonu",
+  "rd_form_cancel": "Anuluj",
+  "rd_form_confirm": "Potwierdź"
 }

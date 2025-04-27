@@ -1,5 +1,20 @@
 let currentLang = localStorage.getItem('language') || 'en';
-document.getElementById('languageSelect').value = currentLang;
+
+// Якщо є селектор вибору мови на цій сторінці — встановити значення
+const languageSelect = document.getElementById('languageSelect');
+if (languageSelect) {
+    languageSelect.value = currentLang;
+
+    // Додати слухач зміни мови тільки якщо селектор є
+    languageSelect.addEventListener('change', function () {
+        const selectedLang = this.value;
+        localStorage.setItem('language', selectedLang);
+        loadLanguage(selectedLang);
+    });
+}
+
+// Завантаження мови при завантаженні сторінки
+loadLanguage(currentLang);
 
 function loadLanguage(lang) {
     fetch(`/static/lang/${lang}.json`)
@@ -19,13 +34,3 @@ function loadLanguage(lang) {
             });
         });
 }
-
-// Завантаження мови при першому завантаженні сторінки
-loadLanguage(currentLang);
-
-// Зміна мови
-document.getElementById('languageSelect').addEventListener('change', function () {
-    const selectedLang = this.value;
-    localStorage.setItem('language', selectedLang);
-    loadLanguage(selectedLang);
-});

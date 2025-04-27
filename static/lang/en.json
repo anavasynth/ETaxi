@@ -25,5 +25,18 @@
   "services_bottom_desc": "Our services are designed to meet all your transportation needs. Whether you need a quick ride across town, a reliable airport transfer, or a comfortable taxi for a special event, we've got you covered. Our professional drivers ensure your safety and comfort throughout the journey.",
 
   "go_to_transfers": "Go to Transfers",
-  "why_choose_us": "Why Choose Us?"
+  "why_choose_us": "Why Choose Us?",
+
+  "rd_route_len": "Route Length",
+  "rd_tariff": "Tariff",
+  "rd_price": "Price",
+  "rd_route_details": "Route Details",
+  "rd_choose_class": "Choose Class",
+  "rd_confirm_order": "Confirm Order",
+  "rd_cancel": "Cancel",
+  "rd_confirm_route": "Confirm Route",
+  "rd_form_name": "Name",
+  "rd_form_phone": "Phone number",
+  "rd_form_cancel": "Cancel",
+  "rd_form_confirm": "Confirm"
 }
