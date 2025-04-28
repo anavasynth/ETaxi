@@ -1,4 +1,4 @@
-/* about section */
+/* Про секцію */
 .about {
   display: flex;
   justify-content: space-between;
@@ -7,9 +7,9 @@
   border-bottom: 1px solid #ccc;
   background: #fff;
   gap: 40px;
-
-  width: 80%;
-  margin: 0 auto; /* Центрує блок */
+  max-width: 1200px; /* Set a max-width to ensure the layout doesn't stretch too far */
+  margin: 0 auto;
+  width: 100%;
 }
 
 .about-left {
@@ -57,23 +57,31 @@
 }
 
 .green-box {
-  background-color: #3AAA35;
+  background-image: url("/static/img/etaxi.png");
   flex: 1;
+    background-size: contain; /* Зображення не буде розтягуватись, але буде видно повністю */
+  background-repeat: no-repeat; /* Зображення не буде повторюватися */
+  background-position: center; /* Центруємо зображення в контейнері */
 }
 
 .features {
+  margin-top: 30px;
   display: flex;
+  flex-direction: column; /* Розташування елементів по колонці */
   gap: 40px;
+  align-items: center; /* Вирівнювання по центру по горизонталі */
 }
 
 .features h4 {
   font-size: 16px;
   margin-bottom: 5px;
+  text-align: center; /* Вирівнювання заголовків по центру */
 }
 
 .features p {
   color: #666;
   font-size: 14px;
+  text-align: center; /* Вирівнювання тексту по центру */
 }
 
 .about-right {
@@ -114,17 +122,69 @@
   font-weight: bold;
 }
 
-/* services section */
+/* Адаптив */
+@media (max-width: 1024px) {
+  .about {
+    flex-direction: column;
+    padding: 40px 20px; /* Less padding on smaller screens */
+  }
 
+  .about-left, .about-right {
+    flex: none;
+    width: 100%;
+  }
+
+  .stats {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .features {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .bar span {
+    width: 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-left h2 {
+    font-size: 24px; /* Adjust heading size */
+  }
+
+  .about-left p {
+    font-size: 14px;
+  }
+
+  .stat-box {
+    padding: 30px 20px; /* Adjust padding for smaller screens */
+  }
+
+  .stat-box .stat-number {
+    font-size: 28px;
+  }
+
+  .features h4 {
+    font-size: 14px;
+  }
+
+  .features p {
+    font-size: 12px;
+  }
+}
+
+
+/* Секція послуг */
 .services {
   padding: 80px 60px;
   text-align: left;
   background-color: #fff;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
-
   width: 80%;
-  margin: 0 auto; /* Центрує блок */
+  margin: 0 auto;
 }
 
 .services .section-label {
@@ -144,9 +204,9 @@
 
 .service-cards {
   display: flex;
-  flex-wrap: wrap; /* Дозволяє перенос */
+  flex-wrap: wrap;
   gap: 40px;
-  justify-content: center; /* Центрує картки в рядку */
+  justify-content: center;
   margin-bottom: 30px;
 }
 
@@ -155,7 +215,7 @@
   border-radius: 10px;
   overflow: hidden;
   background: #f1f1f1;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .card-image {
@@ -216,28 +276,31 @@
   white-space: nowrap;
 }
 
-/* pricing-section */
-
+/* Секція цін */
 .pricing-section {
   padding: 60px 20px;
   text-align: center;
   background-color: #f9f9f9;
 }
+
 .section-subtitle {
   color: #ffc107;
   font-weight: bold;
   letter-spacing: 1px;
 }
+
 .section-title {
   font-size: 32px;
   margin: 10px 0 40px;
 }
+
 .pricing-cards {
   display: flex;
   gap: 20px;
   justify-content: center;
   flex-wrap: wrap;
 }
+
 .card {
   background-color: #1a1a1a;
   color: #fff;
@@ -245,23 +308,28 @@
   padding: 20px;
   width: 300px;
 }
+
 .card.highlighted {
   background-color: #e5e5e5;
   color: #000;
 }
+
 .card .price {
   font-size: 24px;
   font-weight: bold;
 }
+
 .card .price span {
   font-size: 14px;
   color: #aaa;
 }
+
 .card ul {
   text-align: left;
   margin: 20px 0;
   padding-left: 20px;
 }
+
 .card .btn {
   display: inline-block;
   background-color: #34c759;
@@ -271,17 +339,18 @@
   text-decoration: none;
 }
 
-/* why-choose-us-section */
-
+/* Секція "Чому обирають нас" */
 .why-choose-us {
   background-color: white;
   padding: 60px 20px;
   text-align: center;
 }
+
 .why-header {
   max-width: 800px;
   margin: 0 auto 40px;
 }
+
 .why-button {
   border: 1px solid #000;
   background: #fff;
@@ -289,21 +358,40 @@
   padding: 10px 20px;
   border-radius: 30px;
 }
-.features {
+
+.p_why{
+  margin-top: 15px;
+}
+
+.features1 {
   display: flex;
   justify-content: space-around;
   gap: 20px;
   flex-wrap: wrap;
   margin-bottom: 40px;
 }
-.feature {
+
+.feature1 {
   flex: 1 1 200px;
   text-align: center;
 }
-.feature img {
-  height: 40px;
-  margin-bottom: 10px;
+
+.feature1 img {
+  max-height: 50px; /* Обмежуємо висоту іконок */
+  width: auto; /* Встановлюємо ширину автоматично, щоб зберегти пропорції */
+  margin-bottom: 15px; /* Додаємо відступ знизу */
 }
+
+.feature1 h4 {
+  font-size: 18px;
+  margin-bottom: 10px; /* Відступ від іконки */
+}
+
+.feature1 p {
+  font-size: 14px;
+  color: #666;
+}
+
 .video-block {
   background-color: #34c759;
   height: 200px;
@@ -312,6 +400,7 @@
   align-items: center;
   border-radius: 8px;
 }
+
 .play-button {
   background: none;
   border: none;
@@ -320,8 +409,7 @@
   cursor: pointer;
 }
 
-/* lang styles */
-
+/* Стилі мови */
 .language-select {
   padding: 4px 8px;
   font-size: 13px;
@@ -342,3 +430,106 @@
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
+/* Адаптивний дизайн */
+@media (max-width: 1200px) {
+  .about, .services {
+    padding: 60px 30px;
+    width: 90%;
+  }
+}
+
+@media (max-width: 992px) {
+  .about {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .about-left, .about-right {
+    width: 100%;
+  }
+
+  .stats {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .services-bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .service-cards {
+    justify-content: center;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .pricing-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .why-choose-us .features {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .left-section, .right-section {
+    width: 100%;
+  }
+
+  .nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav a, .ride-btn, .language-select {
+    width: 100%;
+  }
+
+  .taxi-img {
+    width: 80%;
+    height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .about h2, .services h2, .section-title {
+    font-size: 24px;
+  }
+
+  .about-left p, .services-bottom p, .card-content p {
+    font-size: 13px;
+  }
+
+  .stats {
+    gap: 20px;
+  }
+
+  .features {
+    gap: 20px;
+  }
+
+  .stat-box {
+    padding: 20px;
+  }
+}

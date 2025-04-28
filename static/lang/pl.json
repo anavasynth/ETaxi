@@ -36,5 +36,24 @@
   "rd_form_name": "Imię",
   "rd_form_phone": "Numer telefonu",
   "rd_form_cancel": "Anuluj",
-  "rd_form_confirm": "Potwierdź"
+  "rd_form_confirm": "Potwierdź",
+
+  "transfers_h1": "Zarezerwuj transfer już teraz!",
+  "view_transfers_button": "Zobacz transfery",
+  "available_transfers": "Dostępne transfery",
+
+  "transfer_modal_title": "Zamówienie transferu: __TRANSFER__",
+  "transfer_modal_name": "Imię",
+  "transfer_modal_phone": "Telefon",
+  "transfer_modal_seats": "Liczba miejsc",
+  "transfer_modal_price": "Cena",
+  "transfer_modal_cancel": "Anuluj",
+  "transfer_modal_pay": "Zapłać",
+  "book_a_transfer": "Zarezerwować transfer",
+  "transfers_p": "Wszystkie przelewy mają różne ceny",
+  "see_more_transfers": "Zobacz więcej",
+
+  "transfer_auschwitz": "Oświęcim",
+  "transfer_zator": "Zator (park rozrywki)",
+  "transfer_zakopane": "Zakopane"
 }

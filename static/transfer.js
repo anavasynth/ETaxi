@@ -1,12 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
   function openTransferModal(button) {
     const transfer = button.dataset.transfer;
+    const transferKey = button.dataset.transferKey; // забираємо ключ трансферу
     const price13 = button.dataset.price13;
     const price46 = button.dataset.price46;
     const price68 = button.dataset.price68;
 
     const modal = new bootstrap.Modal(document.getElementById('transferModal'));
-    document.getElementById('transferModalLabel').textContent = `Замовлення трансферу: ${transfer}`;
+
+        // Завантажити поточну мову
+    const lang = localStorage.getItem('language') || 'en';
+    fetch(`/static/lang/${lang}.json`)
+        .then(response => response.json())
+        .then(translations => {
+            let titleTemplate = translations['transfer_modal_title'] || 'Замовлення трансферу: __TRANSFER__';
+            let transferName = translations[transferKey] || button.dataset.transfer; // якщо переклад не знайдено — використовуємо оригінальну назву
+            let finalTitle = titleTemplate.replace('__TRANSFER__', transferName);
+            document.getElementById('transferModalLabel').textContent = finalTitle;
+        });
 
     const priceField = document.getElementById('price');
     const seatsField = document.getElementById('seats');

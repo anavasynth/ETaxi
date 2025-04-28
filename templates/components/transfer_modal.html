@@ -3,13 +3,13 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header bg-success text-white">
-        <h5 class="modal-title" id="transferModalLabel">Замовлення трансферу</h5>
+        <h5 class="modal-title" id="transferModalLabel" data-i18n="transfer_modal_header">Замовлення трансферу</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрити"></button>
       </div>
       <div class="modal-body">
         <form id="transferForm">
             <div class="mb-3">
-            <label for="firstName" class="form-label">Ім'я</label>
+            <label for="firstName" class="form-label" data-i18n="transfer_modal_name">Ім'я</label>
             <input type="text" class="form-control" id="firstName" required>
           </div>
           <div class="mb-3">
@@ -17,11 +17,11 @@
             <input type="email" class="form-control" id="email" required>
           </div>
             <div class="mb-3">
-            <label for="phone" class="form-label">Phone</label>
+            <label for="phone" class="form-label" data-i18n="transfer_modal_phone">Phone</label>
             <input type="text" class="form-control" id="phone" required>
           </div>
           <div class="mb-3">
-            <label for="seats" class="form-label">Кількість місць</label>
+            <label for="seats" class="form-label" data-i18n="transfer_modal_seats">Кількість місць</label>
             <select class="form-select" id="seats" required>
               <option value="1-3">1–3 people</option>
               <option value="4-6">4–6 people</option>
@@ -29,15 +29,17 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="price" class="form-label">Ціна</label>
+            <label for="price" class="form-label" data-i18n="transfer_modal_price">Ціна</label>
             <input type="text" class="form-control" id="price" readonly>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
-        <button type="button" class="btn btn-success" id="payTransferBtn">Оплатити</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="transfer_modal_cancel">Скасувати</button>
+        <button type="button" class="btn btn-success" id="payTransferBtn" data-i18n="transfer_modal_pay">Оплатити</button>
       </div>
     </div>
   </div>
 </div>
+
+<script src="/static/lang.js" defer></script>

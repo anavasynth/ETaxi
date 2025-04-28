@@ -38,5 +38,24 @@
   "rd_form_name": "Name",
   "rd_form_phone": "Phone number",
   "rd_form_cancel": "Cancel",
-  "rd_form_confirm": "Confirm"
+  "rd_form_confirm": "Confirm",
+
+  "transfers_h1": "Book a transfer right now!",
+  "view_transfers_button": "View Transfets",
+  "available_transfers": "Available Transfers",
+
+  "transfer_modal_title": "Transfer Order: __TRANSFER__",
+  "transfer_modal_name": "First Name",
+  "transfer_modal_phone": "Phone",
+  "transfer_modal_seats": "Number of Seats",
+  "transfer_modal_price": "Price",
+  "transfer_modal_cancel": "Cancel",
+  "transfer_modal_pay": "Pay",
+  "book_a_transfer": "Book a transfer",
+  "transfers_p": "All tranfers have different prices",
+  "see_more_transfers": "See more",
+
+  "transfer_auschwitz": "Auschwitz",
+  "transfer_zator": "Zator (amusement park)",
+  "transfer_zakopane": "Zakopane"
 }

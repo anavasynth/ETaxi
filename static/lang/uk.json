@@ -36,5 +36,24 @@
   "rd_form_name": "Ім'я",
   "rd_form_phone": "Номер телефону",
   "rd_form_cancel": "Скасувати",
-  "rd_form_confirm": "Підтвердити"
+  "rd_form_confirm": "Підтвердити",
+
+  "transfers_h1": "Замовте трансфер прямо зараз!",
+  "view_transfers_button": "Переглянути трансфери",
+  "available_transfers": "Доступні трансфери",
+
+  "transfer_modal_title": "Замовлення трансферу: __TRANSFER__",
+  "transfer_modal_name": "Ім'я",
+  "transfer_modal_phone": "Телефон",
+  "transfer_modal_seats": "Кількість місць",
+  "transfer_modal_price": "Ціна",
+  "transfer_modal_cancel": "Скасувати",
+  "transfer_modal_pay": "Оплатити",
+  "book_a_transfer": "Замовити трансфер",
+  "transfers_p": "Всі трансфери мають різні ціни",
+  "see_more_transfers": "Побачити ще",
+
+  "transfer_auschwitz": "Освенцим",
+  "transfer_zator": "Затор (парк розваг)",
+  "transfer_zakopane": "Закопане"
 }

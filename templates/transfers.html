@@ -13,26 +13,27 @@
 <div class="container">
     <div class="left-section">
       <img src="/static/img/logo.png" alt="eTaxi Logo" class="logo"/>
-      <h1>Book a transfer right now!</h1>
+      <h1 data-i18n="transfers_h1">Book a transfer right now!</h1>
       <p>Lorem ipsum dolor sit amet consectetur. At tempus sit est commodo viverra duis massa aenean. Tristique lorem ornare vitae lacus id curabitur lobortis feugiat laoreet. Risus tempus nisl pulvinar quis. Massa augue viverra sollicitudin fames semper.</p>
       <form>
-        <button type="submit">View Transfets</button>
+        <button type="submit" data-i18n="view_transfers_button" onclick="window.location.href='#transferSection'">View Transfers</button>
       </form>
     </div>
     <div class="right-section">
+        <button class="burger" id="burger">&#9776;</button>
       <nav class="nav">
-        <a href="/mainpage">Home</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
+        <a href="/" data-i18n="nav_home">Home</a>
+        <a href="#" data-i18n="nav_about">About</a>
+        <a href="#" data-i18n="nav_contact">Contact</a>
         <button class="ride-btn">Get a Ride</button>
       </nav>
       <img src="/static/img/transfer.png" alt="Eco Taxi" class="taxi-img"/>
     </div>
   </div>
 
-<section class="services">
+<section class="services" id="transferSection">
   <h5 class="section-label">Transfers</h5>
-  <h2>Available Transfers</h2>
+  <h2 data-i18n="available_transfers">Available Transfers</h2>
 
   <div class="service-cards">
     <div class="card">
@@ -40,9 +41,9 @@
           <img src="/static/img/auschwitz.png" alt="">
       </div>
       <div class="card-content">
-        <h4>Auschwitz</h4>
+        <h4 data-i18n="transfer_auschwitz">Auschwitz</h4>
         <p>Risus augue dolor tincidunt aliquet. Nunc diam sapien nascetur aenean.</p>
-        <a href="/transfer_auschwitz" class="learn-more">Learn More</a>
+        <a href="/transfer_auschwitz" class="learn-more" data-i18n="learn_more">Learn More</a>
       </div>
     </div>
 
@@ -51,9 +52,9 @@
           <img src="/static/img/zator.png" alt="">
       </div>
       <div class="card-content">
-        <h4>Zator (amusement park)</h4>
+        <h4 data-i18n="transfer_zator">Zator (amusement park)</h4>
         <p>Risus augue dolor tincidunt aliquet. Nunc diam sapien nascetur aenean.</p>
-        <a href="/transfer_zator" class="learn-more">Learn More</a>
+        <a href="/transfer_zator" class="learn-more" data-i18n="learn_more">Learn More</a>
       </div>
     </div>
 
@@ -62,24 +63,24 @@
           <img src="/static/img/zakopane.png" alt="">
       </div>
       <div class="card-content">
-        <h4>Zakopane</h4>
+        <h4 data-i18n="transfer_zakopane">Zakopane</h4>
         <p>Risus augue dolor tincidunt aliquet. Nunc diam sapien nascetur aenean.</p>
-        <a href="/transfer_zakopane" class="learn-more">Learn More</a>
+        <a href="/transfer_zakopane" class="learn-more" data-i18n="learn_more">Learn More</a>
       </div>
     </div>
 
   </div>
 
   <div class="services-bottom">
-    <p>
+    <p data-i18n="transfers_p">
       All tranfers have different prices
     </p>
-    <a href="/transfers" class="go-button">See More</a>
+    <a href="#seemore" class="go-button" data-i18n="see_more_transfers">See More</a>
   </div>
 </section>
 
 
-<section class="services">
+<section class="services" id="seemore">
 
   <div class="service-cards">
     <div class="card">
@@ -89,7 +90,7 @@
       <div class="card-content">
         <h4>Katowice-Pyrzowice (airport)</h4>
         <p>Risus augue dolor tincidunt aliquet. Nunc diam sapien nascetur aenean.</p>
-        <a href="/transfer_katowice_pyrzowice" class="learn-more">Learn More</a>
+        <a href="/transfer_katowice_pyrzowice" class="learn-more" data-i18n="learn_more">Learn More</a>
       </div>
     </div>
 
@@ -100,7 +101,7 @@
       <div class="card-content">
         <h4>Wieliczka Salt Mine</h4>
         <p>Risus augue dolor tincidunt aliquet. Nunc diam sapien nascetur aenean.</p>
-        <a href="/transfer_wieliczka" class="learn-more">Learn More</a>
+        <a href="/transfer_wieliczka" class="learn-more" data-i18n="learn_more">Learn More</a>
       </div>
     </div>
 
@@ -111,7 +112,7 @@
       <div class="card-content">
         <h4>Tęczyn Castle</h4>
         <p>Risus augue dolor tincidunt aliquet. Nunc diam sapien nascetur aenean.</p>
-        <a href="/transfer_teczyn" class="learn-more">Learn More</a>
+        <a href="/transfer_teczyn" class="learn-more" data-i18n="learn_more">Learn More</a>
       </div>
     </div>
 
@@ -122,7 +123,7 @@
       <div class="card-content">
         <h4>John Paul II International Airport</h4>
         <p>Risus augue dolor tincidunt aliquet. Nunc diam sapien nascetur aenean.</p>
-        <a href="/transfer_john_paul" class="learn-more">Learn More</a>
+        <a href="/transfer_john_paul" class="learn-more" data-i18n="learn_more">Learn More</a>
       </div>
     </div>
 
@@ -133,49 +134,60 @@
       <div class="card-content">
         <h4>City transfer</h4>
         <p>Risus augue dolor tincidunt aliquet. Nunc diam sapien nascetur aenean.</p>
-        <a href="/transfer_city_transfer" class="learn-more">Learn More</a>
+        <a href="/transfer_city_transfer" class="learn-more" data-i18n="learn_more">Learn More</a>
       </div>
     </div>
   </div>
 </section>
 
-  <section class="pricing-section">
+<section class="pricing-section">
   <h5 class="section-subtitle">SWIFT RESERVATIONS</h5>
   <h2 class="section-title">Explore Our Budget-Friendly Rates</h2>
   <div class="pricing-cards">
     <div class="card">
-      <h4>Standart (1-4 passengers)</h4>
-      <p class="desc">Nunc massa non turpis orci non. Non urna donec dui imperdiet.</p>
-      <p class="price">$8.00 <span>per km</span></p>
+      <h4>Tariff I</h4>
+      <p class="desc">The rate per kilometer applied on weekdays within the administrative boundaries of the city.</p>
+      <p class="price">2.82 PLN <span>per km</span></p>
       <ul>
-        <li>🚗 Hatchback Vehicles</li>
-        <li>💳 Pay-per-KM Pricing</li>
-        <li>📅 Flexible Scheduling</li>
-        <li>📍 Real-time Tracking</li>
+        <li>🚕 Available on weekdays</li>
+        <li>🏙️ Inside city limits</li>
+        <li>⏰ All day (except night hours)</li>
       </ul>
       <a href="#" class="btn">Learn More</a>
     </div>
-    <div class="card highlighted">
-      <h4>Comfort (1-6 passengers)</h4>
-      <p class="desc">Nunc massa non turpis orci non. Non urna donec dui imperdiet.</p>
-      <p class="price">$40.00 <span>per month</span></p>
-      <ul>
-        <li>🚘 Executive-class Vehicles</li>
-        <li>⚡ Priority Booking</li>
-        <li>✈️ Airport Transfer Included</li>
-        <li>📞 24/7 Customer Support</li>
-      </ul>
-      <a href="#" class="btn">Learn More</a>
-    </div>
+
     <div class="card">
-      <h4>XL (6-8 passengers)</h4>
-      <p class="desc">Nunc massa non turpis orci non. Non urna donec dui imperdiet.</p>
-      <p class="price">$16.00 <span>per hour</span></p>
+      <h4>Tariff II</h4>
+      <p class="desc">Applied during nighttime hours from 10:00 PM to 6:00 AM and on Sundays and public holidays.</p>
+      <p class="price">3.15 PLN <span>per km</span></p>
       <ul>
-        <li>🚙 SUVs or Premium Vehicles</li>
-        <li>⏱️ Flexible Hourly Rentals</li>
-        <li>👨‍✈️ Experienced Drivers</li>
-        <li>🏙️ Ideal for City Tours or Events</li>
+        <li>🌙 Nighttime service</li>
+        <li>🗓️ Sundays and public holidays</li>
+        <li>🏙️ Within city limits</li>
+      </ul>
+      <a href="#" class="btn">Learn More</a>
+    </div>
+
+    <div class="card">
+      <h4>Tariff III</h4>
+      <p class="desc">Rate per kilometer applied on weekdays between 6:00 AM and 10:00 PM outside the city limits.</p>
+      <p class="price">3.79 PLN <span>per km</span></p>
+      <ul>
+        <li>🚖 Weekday service</li>
+        <li>🌄 Daytime hours (6 AM – 10 PM)</li>
+        <li>🌐 Outside city limits</li>
+      </ul>
+      <a href="#" class="btn">Learn More</a>
+    </div>
+
+    <div class="card">
+      <h4>Tariff IV</h4>
+      <p class="desc">Applied during nighttime hours from 10:00 PM to 6:00 AM and on Sundays and public holidays outside the city limits.</p>
+      <p class="price">4.00 PLN <span>per km</span></p>
+      <ul>
+        <li>🌙 Nighttime service</li>
+        <li>🛣️ Outside city limits</li>
+        <li>🗓️ Sundays and public holidays</li>
       </ul>
       <a href="#" class="btn">Learn More</a>
     </div>
@@ -229,5 +241,15 @@
     </div>
   </div>
 </footer>
+
+  <script>
+    const burger = document.getElementById('burger');
+    const navMenu = document.getElementById('navMenu');
+
+    burger.addEventListener('click', () => {
+      navMenu.style.left = navMenu.style.left === "0px" ? "-250px" : "0px";
+    });
+  </script>
 </body>
+<script src="/static/lang.js" defer></script>
 </html>
