@@ -1,34 +1,36 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Підтвердження замовлення</title>
+    <title>Order Confirmation</title>
 </head>
 <body style="background-color: #e8f5e9; font-family: Arial, sans-serif; padding: 20px;">
     <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
         <div style="text-align: center;">
         </div>
-        <h2 style="color: #2e7d32;">Дякуємо за ваше замовлення!</h2>
-        <p>Шановний(а) {{ customer_name }},</p>
-        <p>Ми успішно отримали ваше замовлення:</p>
+        <h2 style="color: #2e7d32;">Thank you for your order!</h2>
+        <p>Dear {{ customer_name }},</p>
+        <p>We have successfully received your order:</p>
         <ul>
-            <li><strong>Телефон:</strong> {{ phone }}</li>
+            <li><strong>Phone:</strong> {{ phone }}</li>
             <li><strong>Email:</strong> {{ email }}</li>
             {% if type == 'Ride' %}
-            <li><strong>Пункт відправлення:</strong> {{ start_address }}</li>
-            <li><strong>Пункт призначення:</strong> {{ end_address }}</li>
+            <li><strong>Departure Point:</strong> {{ start_address }}</li>
+            <li><strong>Destination Point:</strong> {{ end_address }}</li>
+            <li><strong>Car Class:</strong> {{ car_class }}</li>
             {% elif type == 'Transfer' %}
-            <li><strong>Трансфер:</strong> {{ transfer }}</li>
+            <li><strong>Transfer:</strong> {{ transfer }}</li>
+            <li><strong>Number of Seats:</strong> {{ seats }}</li>
             {% endif %}
-            <li><strong>Ціна:</strong> {{ price }} грн</li>
+            <li><strong>Price:</strong> {{ price }} UAH</li>
             {% if payment_type != 'Full price' %}
-            <li><strong>Предоплата</strong> {{ payment_type }}</li>
+            <li><strong>Prepayment:</strong> {{ payment_type }}</li>
             {% endif %}
-            <li><strong>Дата та час:</strong> {{ date_time }}</li>
+            <li><strong>Date and Time:</strong> {{ date_time }}</li>
         </ul>
-        <p>Ми з вами скоро зв'яжемося!</p>
+        <p>We will contact you shortly!</p>
         <hr style="margin: 30px 0;">
-        <p style="font-size: 12px; color: #777;">Це автоматичне повідомлення, будь ласка, не відповідайте на нього.</p>
+        <p style="font-size: 12px; color: #777;">This is an automated message, please do not reply to it.</p>
     </div>
 </body>
 </html>

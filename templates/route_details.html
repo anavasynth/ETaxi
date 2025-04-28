@@ -85,23 +85,23 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Оплата</label>
+            <label class="form-label" data-i18n="transfer_modal_payment_type">Тип оплати</label>
             <select class="form-select" id="paymentOption" required>
-              <option value="full">Оплатити всю суму</option>
-              <option value="partial">Оплатити 30%</option>
+              <option value="full" data-i18n="transfer_modal_full_payment">Повна оплата</option>
+              <option value="partial" data-i18n="transfer_modal_partial_payment">Часткова оплата</option>
             </select>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Час поїздки</label>
+            <label class="form-label" data-i18n="ride_modal_ride_time">Час поїздки</label>
             <select class="form-select" id="rideTimeOption" required>
-              <option value="now">Замовити зараз</option>
-              <option value="later">Замовити на певний час</option>
+              <option value="now" data-i18n="ride_modal_book_now">Замовити зараз</option>
+              <option value="later" data-i18n="ride_modal_book_after">Замовити на певний час</option>
             </select>
           </div>
 
           <div class="mb-3" id="scheduledTimeBlock" style="display:none;">
-            <label for="scheduledTime" class="form-label">Виберіть дату і час</label>
+            <label for="scheduledTime" class="form-label" data-i18n="ride_modal_choose_date">Виберіть дату і час</label>
             <input type="datetime-local" class="form-control" id="scheduledTime">
           </div>
 

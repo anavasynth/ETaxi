@@ -77,26 +77,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('confirmOrderBtn').addEventListener('click', async () => {
   const startInput = document.getElementById('start').value.trim();
-  const endInput = document.getElementById('end').value.trim();
-  const selectedClass = document.querySelector('.ride-class-option.selected');
+const endInput = document.getElementById('end').value.trim();
+const selectedClass = document.querySelector('.ride-class-option.selected');
 
-  if (!startInput || !endInput) {
-    showModalAlert('Будь ласка, введіть обидві адреси.')
-    return;
-  }
+if (!startInput || !endInput) {
+  showModalAlert('enter_both_addresses');
+  return;
+}
 
-  if (!selectedClass) {
-    showModalAlert('Оберіть клас авто.');
-    return;
-  }
+if (!selectedClass) {
+  showModalAlert('select_car_class');
+  return;
+}
 
-  const startCoords = window.startCoords;
-  const endCoords = window.endCoords;
+const startCoords = window.startCoords;
+const endCoords = window.endCoords;
 
-  if (!startCoords || !endCoords) {
-    showModalAlert('Будь ласка, оберіть точки на мапі.');
-    return;
-  }
+if (!startCoords || !endCoords) {
+  showModalAlert('select_map_points');
+  return;
+}
 
   await getRoute(startCoords, endCoords);
 
@@ -201,12 +201,17 @@ document.getElementById('rideTimeOption').addEventListener('change', function() 
   }
 });
 
-function showModalAlert(message) {
-  // Set the modal message
-  document.getElementById('modalAlertMessage').innerText = message;
+function showModalAlert(messageKey) {
+  const currentLang = localStorage.getItem('language') || 'en';
+  fetch(`/static/lang/${currentLang}.json`)
+    .then(response => response.json())
+    .then(translations => {
+      const message = translations[messageKey] || messageKey;
+      document.getElementById('modalAlertMessage').innerText = message;
 
-  // Show the modal
-  const alertModal = new bootstrap.Modal(document.getElementById('genericModal'));
-  alertModal.show();
+      // Show the modal
+      const alertModal = new bootstrap.Modal(document.getElementById('genericModal'));
+      alertModal.show();
+    });
 }
 });

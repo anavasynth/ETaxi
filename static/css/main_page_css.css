@@ -280,7 +280,7 @@
 .pricing-section {
   padding: 60px 20px;
   text-align: center;
-  background-color: #f9f9f9;
+  background-color: #fff;
 }
 
 .section-subtitle {
@@ -319,7 +319,7 @@
   font-weight: bold;
 }
 
-.card .price span {
+.card .price span span {
   font-size: 14px;
   color: #aaa;
 }

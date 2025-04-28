@@ -1,30 +1,34 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Нове замовлення</title>
+    <title>New Order</title>
 </head>
 <body style="background-color: #f1f8e9; font-family: Arial, sans-serif; padding: 20px;">
     <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
         <div style="text-align: center;">
         </div>
-        <h2 style="color: #33691e;">НОВЕ ЗАМОВЛЕННЯ</h2>
-        <p>Деталі замовлення:</p>
+        <h2 style="color: #33691e;">NEW ORDER</h2>
+        <p>Order details:</p>
         <ul>
-            <li><strong>Ім'я:</strong> {{ customer_name }}</li>
-            <li><strong>Телефон:</strong> {{ phone }}</li>
+            <li><strong>Name:</strong> {{ customer_name }}</li>
+            <li><strong>Phone:</strong> {{ phone }}</li>
             <li><strong>Email:</strong> {{ email }}</li>
             {% if type == 'Ride' %}
-            <li><strong>Пункт відправлення:</strong> {{ start_address }}</li>
-            <li><strong>Пункт призначення:</strong> {{ end_address }}</li>
+            <li><strong>Departure Point:</strong> {{ start_address }}</li>
+            <li><strong>Destination Point:</strong> {{ end_address }}</li>
+            <li><strong>Car Class:</strong> {{ car_class }}</li>
             {% elif type == 'Transfer' %}
-            <li><strong>Трансфер:</strong> {{ transfer }}</li>
+            <li><strong>Transfer:</strong> {{ transfer }}</li>
+            <li><strong>Number of Seats:</strong> {{ seats }}</li>
             {% endif %}
-            <li><strong>Ціна:</strong> {{ price }} грн</li>
-            <li><strong>Дата та час:</strong> {{ date_time }}</li>
-            <li><strong>Тип:</strong> {{ type }}</li>
+            <li><strong>Price:</strong> {{ price }} UAH</li>
+            {% if payment_type != 'Full price' %}
+            <li><strong>Prepayment:</strong> {{ payment_type }}</li>
+            {% endif %}
+            <li><strong>Date and Time:</strong> {{ date_time }}</li>
         </ul>
-        <p>Перевірте замовлення якнайшвидше.</p>
+        <p>Please check the order as soon as possible.</p>
     </div>
 </body>
 </html>

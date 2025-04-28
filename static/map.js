@@ -6,11 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
   currentInputType = type;
 
   // Change modal message depending on the type
-  const message = `Натисніть на карту, щоб вибрати точку для ${type === 'start' ? 'посадки' : 'висадки'}.`;
+    const messageKey = type === 'start' ? 'select_pickup_point' : 'select_dropoff_point';
+    showModalAlert(messageKey);
 
-  showModalAlert(message);
 }
-
   window.enableMapClick = enableMapClick;
 
   map.on('click', (e) => {
@@ -82,12 +81,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.searchLocation = searchLocation;
 
-  function showModalAlert(message) {
-  // Set the modal message
-  document.getElementById('modalAlertMessage').innerText = message;
+  function showModalAlert(messageKey) {
+  const currentLang = localStorage.getItem('language') || 'en';
+  fetch(`/static/lang/${currentLang}.json`)
+    .then(response => response.json())
+    .then(translations => {
+      const message = translations[messageKey] || messageKey;
+      document.getElementById('modalAlertMessage').innerText = message;
 
-  // Show the modal
-  const alertModal = new bootstrap.Modal(document.getElementById('genericModal'));
-  alertModal.show();
+      // Show the modal
+      const alertModal = new bootstrap.Modal(document.getElementById('genericModal'));
+      alertModal.show();
+    });
 }
 });

@@ -5,7 +5,6 @@
     <title>Title</title>
     <link rel="stylesheet" href="/static/css/header_section.css"/>
   <link rel="stylesheet" href="/static/css/footer_style.css"/>
-  <link rel="stylesheet" href="/static/css/pricing_section_style.css"/>
   <link rel="stylesheet" href="/static/css/main_page_css.css"/>
 </head>
 <body>
@@ -21,11 +20,12 @@
     </div>
     <div class="right-section">
         <button class="burger" id="burger">&#9776;</button>
-      <nav class="nav">
-        <a href="/" data-i18n="nav_home">Home</a>
-        <a href="#" data-i18n="nav_about">About</a>
-        <a href="#" data-i18n="nav_contact">Contact</a>
-        <button class="ride-btn">Get a Ride</button>
+      <nav class="nav" id="navMenu">
+        <a data-i18n="nav_home" href="/">Home</a>
+        <a data-i18n="nav_about" href="#">About</a>
+        <a data-i18n="nav_contact" href="#">Contact</a>
+        <button data-i18n="get_a_ride" class="ride-btn">Get a Ride</button>
+
       </nav>
       <img src="/static/img/transfer.png" alt="Eco Taxi" class="taxi-img"/>
     </div>
@@ -140,56 +140,49 @@
   </div>
 </section>
 
-<section class="pricing-section">
-  <h5 class="section-subtitle">SWIFT RESERVATIONS</h5>
-  <h2 class="section-title">Explore Our Budget-Friendly Rates</h2>
+ <section class="pricing-section">
+  <h5 class="section-subtitle" data-i18n="section_subtitle"></h5>
+  <h2 class="section-title" data-i18n="section_title"></h2>
   <div class="pricing-cards">
     <div class="card">
-      <h4>Tariff I</h4>
-      <p class="desc">The rate per kilometer applied on weekdays within the administrative boundaries of the city.</p>
-      <p class="price">2.82 PLN <span>per km</span></p>
+      <h4 data-i18n="tariff_i_title"></h4>
+      <p class="desc" data-i18n="tariff_i_desc"></p>
+      <p class="price"><span data-i18n="tariff_i_price"></span> <span data-i18n="per_km">per km</span></p>
       <ul>
-        <li>🚕 Available on weekdays</li>
-        <li>🏙️ Inside city limits</li>
-        <li>⏰ All day (except night hours)</li>
+        <li data-i18n="tariff_i_list_1"></li>
+        <li data-i18n="tariff_i_list_2"></li>
+        <li data-i18n="tariff_i_list_3"></li>
       </ul>
-      <a href="#" class="btn">Learn More</a>
     </div>
-
     <div class="card">
-      <h4>Tariff II</h4>
-      <p class="desc">Applied during nighttime hours from 10:00 PM to 6:00 AM and on Sundays and public holidays.</p>
-      <p class="price">3.15 PLN <span>per km</span></p>
+      <h4 data-i18n="tariff_ii_title"></h4>
+      <p class="desc" data-i18n="tariff_ii_desc"></p>
+      <p class="price"><span data-i18n="tariff_ii_price"></span> <span data-i18n="per_km">per km</span></p>
       <ul>
-        <li>🌙 Nighttime service</li>
-        <li>🗓️ Sundays and public holidays</li>
-        <li>🏙️ Within city limits</li>
+        <li data-i18n="tariff_ii_list_1"></li>
+        <li data-i18n="tariff_ii_list_2"></li>
+        <li data-i18n="tariff_ii_list_3"></li>
       </ul>
-      <a href="#" class="btn">Learn More</a>
     </div>
-
     <div class="card">
-      <h4>Tariff III</h4>
-      <p class="desc">Rate per kilometer applied on weekdays between 6:00 AM and 10:00 PM outside the city limits.</p>
-      <p class="price">3.79 PLN <span>per km</span></p>
+      <h4 data-i18n="tariff_iii_title"></h4>
+      <p class="desc" data-i18n="tariff_iii_desc"></p>
+      <p class="price"><span data-i18n="tariff_iii_price"></span> <span data-i18n="per_km">per km</span></p>
       <ul>
-        <li>🚖 Weekday service</li>
-        <li>🌄 Daytime hours (6 AM – 10 PM)</li>
-        <li>🌐 Outside city limits</li>
+        <li data-i18n="tariff_iii_list_1"></li>
+        <li data-i18n="tariff_iii_list_2"></li>
+        <li data-i18n="tariff_iii_list_3"></li>
       </ul>
-      <a href="#" class="btn">Learn More</a>
     </div>
-
     <div class="card">
-      <h4>Tariff IV</h4>
-      <p class="desc">Applied during nighttime hours from 10:00 PM to 6:00 AM and on Sundays and public holidays outside the city limits.</p>
-      <p class="price">4.00 PLN <span>per km</span></p>
+      <h4 data-i18n="tariff_iv_title"></h4>
+      <p class="desc" data-i18n="tariff_iv_desc"></p>
+      <p class="price"><span data-i18n="tariff_iv_price"></span> <span data-i18n="per_km">per km</span></p>
       <ul>
-        <li>🌙 Nighttime service</li>
-        <li>🛣️ Outside city limits</li>
-        <li>🗓️ Sundays and public holidays</li>
+        <li data-i18n="tariff_iv_list_1"></li>
+        <li data-i18n="tariff_iv_list_2"></li>
+        <li data-i18n="tariff_iv_list_3"></li>
       </ul>
-      <a href="#" class="btn">Learn More</a>
     </div>
   </div>
 </section>
@@ -198,9 +191,8 @@
   <div class="footer-container">
     <div class="footer-about">
       <img src="/static/img/logo_footer.png" alt="eTaxi Logo" class="logo" />
-      <p>
-        Faucibus quis fringilla scelerisque dui. Amet parturient dui venenatis amet sagittis
-        viverra vel tincidunt. Orci tincidunt.
+      <p data-i18n="footer_about_text">
+        eTaxi — ваш надійний партнер для екологічних та зручних поїздок. Ми пропонуємо швидкі, надійні та сталі послуги таксі, щоб ви завжди могли дістатися до місця призначення вчасно та без стресу.
       </p>
       <div class="social-icons">
         <a href="#"><img src="facebook-icon.svg" alt="Facebook" /></a>
@@ -211,33 +203,33 @@
     </div>
     <div class="footer-links">
       <div>
-        <h4>Company</h4>
+        <h4 data-i18n="footer_company_title">Компанія</h4>
         <ul>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Contact Info</a></li>
-          <li><a href="#">Our Service</a></li>
-          <li><a href="#">Career</a></li>
+          <li><a href="#" data-i18n="footer_about_us">Про нас</a></li>
+          <li><a href="#" data-i18n="footer_contact_info">Контактна інформація</a></li>
+          <li><a href="#" data-i18n="footer_our_service">Наші послуги</a></li>
+          <li><a href="#" data-i18n="footer_career">Кар'єра</a></li>
         </ul>
       </div>
       <div>
-        <h4>Services</h4>
+        <h4 data-i18n="footer_services_title">Послуги</h4>
         <ul>
-          <li><a href="#">Transfers</a></li>
-          <li><a href="#">Taxi</a></li>
+          <li><a href="#" data-i18n="footer_transfers">Трансфери</a></li>
+          <li><a href="#" data-i18n="footer_taxi">Таксі</a></li>
         </ul>
       </div>
       <div>
-        <h4>Work Hours</h4>
-        <p>🕘 9 AM - 5 PM, Monday - Saturday</p>
-        <p>📞 +48880016108</p>
-        <p>Our Support and Sales team is available 24/7 to answer your queries</p>
+        <h4 data-i18n="footer_work_hours_title">Години роботи</h4>
+        <p data-i18n="footer_work_hours">🕘 9:00 - 17:00, Понеділок - Субота</p>
+        <p data-i18n="footer_phone">📞 +48880016108</p>
+        <p data-i18n="footer_support">Наша служба підтримки та продажів доступна 24/7, щоб відповісти на ваші запити</p>
       </div>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>Copyright © 2025 eTaxi | Design by RichYou Agency</p>
+    <p data-i18n="footer_copyright">Copyright © 2025 eTaxi | Дизайн від RichYou Agency</p>
     <div>
-      <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a>
+      <a href="#" data-i18n="footer_terms_of_use">Умови використання</a> | <a href="#" data-i18n="footer_privacy_policy">Політика конфіденційності</a>
     </div>
   </div>
 </footer>
