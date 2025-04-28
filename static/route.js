@@ -113,14 +113,35 @@ document.getElementById('confirmRouteBtn').addEventListener('click', async () =>
 
     const startAddress = window.startAddress || document.getElementById('start').value;
     const endAddress = window.endAddress || document.getElementById('end').value;
-
     const carClass = selectedClass.dataset.value;
+
+    const paymentType = document.getElementById('paymentOption').value; // full / partial
+    const rideTimeOption = document.getElementById('rideTimeOption').value; // now / later
+    const scheduledTime = document.getElementById('scheduledTime').value; // якщо вибрали "later"
+
+    let paymentAmount = window.calculatedPrice;
+
+    // Якщо вибрано оплату 30%, змінити суму
+    if (paymentType === 'partial') {
+        paymentAmount = (paymentAmount * 0.3).toFixed(2);
+    }
 
     try {
         const response = await fetch('/create-route-order', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ firstName, email, phone, price: window.calculatedPrice, carClass, startAddress, endAddress })
+            body: JSON.stringify({
+                firstName,
+                email,
+                phone,
+                price: paymentAmount,
+                carClass,
+                startAddress,
+                endAddress,
+                paymentType,               // <-- додаємо
+                rideTimeOption,             // (now або later)
+                scheduledTime: rideTimeOption === 'later' ? scheduledTime : null
+            })
         });
 
         const responseText = await response.text();
@@ -141,7 +162,7 @@ document.getElementById('confirmRouteBtn').addEventListener('click', async () =>
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        price: window.calculatedPrice,
+                        price: paymentAmount,
                         order_id: orderId,
                         order_type: 'ride'
                     })
@@ -168,6 +189,16 @@ document.getElementById('confirmRouteBtn').addEventListener('click', async () =>
     } catch (error) {
         alert('Сталася помилка: ' + error.message);
     }
+});
+
+// Показати/сховати блок дати й часу в залежності від вибору
+document.getElementById('rideTimeOption').addEventListener('change', function() {
+  const scheduledBlock = document.getElementById('scheduledTimeBlock');
+  if (this.value === 'later') {
+    scheduledBlock.style.display = 'block';
+  } else {
+    scheduledBlock.style.display = 'none';
+  }
 });
 
 function showModalAlert(message) {

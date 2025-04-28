@@ -66,8 +66,9 @@ def stripe_webhook():
                     "email": ride.email ,
                     "start_address": ride.start_address ,
                     "end_address": ride.end_address ,
-                    "date_time": ride.created_at ,
+                    "date_time": ride.time ,
                     "price": ride.price ,
+                    "payment_type": ride.payment_info ,
                     "type": "Ride"  # або "Трансфер"
                 }
 
@@ -103,8 +104,9 @@ def stripe_webhook():
                     "phone": transfer.phone ,
                     "email": transfer.email ,
                     "transfer": transfer.transfer ,
+                    "date_time": transfer.transfer_date ,
                     "price": transfer.price ,
-                    "date_time": transfer.created_at ,
+                    "payment_type": transfer.payment_type ,
                     "type": "Transfer"  # або "Трансфер"
                 }
 

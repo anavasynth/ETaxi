@@ -8,7 +8,7 @@
       </div>
       <div class="modal-body">
         <form id="transferForm">
-            <div class="mb-3">
+          <div class="mb-3">
             <label for="firstName" class="form-label" data-i18n="transfer_modal_name">Ім'я</label>
             <input type="text" class="form-control" id="firstName" required>
           </div>
@@ -16,16 +16,27 @@
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" required>
           </div>
-            <div class="mb-3">
-            <label for="phone" class="form-label" data-i18n="transfer_modal_phone">Phone</label>
+          <div class="mb-3">
+            <label for="phone" class="form-label" data-i18n="transfer_modal_phone">Телефон</label>
             <input type="text" class="form-control" id="phone" required>
           </div>
           <div class="mb-3">
             <label for="seats" class="form-label" data-i18n="transfer_modal_seats">Кількість місць</label>
             <select class="form-select" id="seats" required>
-              <option value="1-3">1–3 people</option>
-              <option value="4-6">4–6 people</option>
-              <option value="6-8">6–8 people</option>
+              <option value="1-3">1–3 особи</option>
+              <option value="4-6">4–6 осіб</option>
+              <option value="6-8">6–8 осіб</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="transferDate" class="form-label" data-i18n="transfer_modal_date">Дата трансферу</label>
+            <input type="date" class="form-control" id="transferDate" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" data-i18n="transfer_modal_payment_type">Тип оплати</label>
+            <select class="form-select" id="paymentType" required>
+              <option value="full" data-i18n="transfer_modal_full_payment">Повна оплата</option>
+              <option value="partial" data-i18n="transfer_modal_partial_payment">Часткова оплата</option>
             </select>
           </div>
           <div class="mb-3">
@@ -41,5 +52,3 @@
     </div>
   </div>
 </div>
-
-<script src="/static/lang.js" defer></script>

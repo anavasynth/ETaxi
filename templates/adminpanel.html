@@ -47,7 +47,9 @@
                         <th>Car Class</th>
                         <th>Start</th>
                         <th>End</th>
+                        <th>Time</th>
                         <th>Price</th>
+                        <th>Type</th>
                         <th>Payment Status</th>
                         <th>Payment ID</th>
                         <th>Driver</th>
@@ -64,7 +66,9 @@
                         <td>{{ ride.car_class }}</td>
                         <td>{{ ride.start_address }}</td>
                         <td>{{ ride.end_address }}</td>
+                        <td>{{ ride.ride_time }}</td>
                         <td>{{ ride.price }}</td>
+                        <td>{{ ride.payment_info }}</td>
                         <td>{{ ride.payment_status }}</td>
                         <td>{{ ride.payment_id }}</td>
                         <td>
@@ -96,7 +100,9 @@
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Seats</th>
+                        <th>Date</th>
                         <th>Price</th>
+                        <th>Type</th>
                         <th>Transfer</th>
                         <th>Payment Status</th>
                         <th>Payment ID</th>
@@ -112,7 +118,9 @@
                         <td>{{ transfer.email }}</td>
                         <td>{{ transfer.phone }}</td>
                         <td>{{ transfer.seats }}</td>
+                        <td>{{ transfer.transfer_date }}</td>
                         <td>{{ transfer.price }}</td>
+                        <td>{{ transfer.payment_type }}</td>
                         <td>{{ transfer.transfer }}</td>
                         <td>{{ transfer.payment_status }}</td>
                         <td>{{ transfer.payment_id }}</td>

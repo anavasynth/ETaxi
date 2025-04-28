@@ -10,10 +10,16 @@ class Transfer(db.Model):
     seats = db.Column(db.String(50), nullable=False)
     price = db.Column(db.Numeric(10, 2), nullable=False)
 
+    transfer_date = db.Column(db.DateTime , nullable = False)  # <--- НОВЕ ПОЛЕ (дата поїздки)
+    payment_type = db.Column(db.String(255) , nullable = False)  # <--- НОВЕ ПОЛЕ (тип оплати)
+
+
     transfer = db.Column(db.String(255), nullable=False)
     payment_status = db.Column(db.String(50), default='pending')
     payment_id = db.Column(db.String(255) , nullable = True)  # Поле для збереження ID оплати
-    driver = db.Column(db.String(255), nullable=True)  # Додайте це поле
+    driver = db.Column(db.String(255), nullable=True)  #
+
+
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
 
 class Ride(db.Model):
@@ -23,6 +29,9 @@ class Ride(db.Model):
     phone = db.Column(db.String(20), nullable=False)
     car_class = db.Column(db.String(255), nullable=True) # Клас авто
     price = db.Column(db.Numeric(10, 2), nullable=False)
+
+    ride_time = db.Column(db.String(255) , nullable = True)
+    payment_info = db.Column(db.String(255) , nullable = True)
 
     start_address = db.Column(db.String(255), nullable=False)
     end_address = db.Column(db.String(255), nullable=False)

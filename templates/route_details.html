@@ -75,7 +75,7 @@
             <label for="confirmFirstName" class="form-label" data-i18n="rd_form_name">Ім'я</label>
             <input type="text" class="form-control" id="confirmFirstName" required>
           </div>
-            <div class="mb-3">
+          <div class="mb-3">
             <label for="confirmEmail" class="form-label">Email</label>
             <input type="text" class="form-control" id="confirmEmail" required>
           </div>
@@ -83,6 +83,28 @@
             <label for="confirmPhone" class="form-label" data-i18n="rd_form_phone">Номер телефону</label>
             <input type="text" class="form-control" id="confirmPhone" required>
           </div>
+
+          <div class="mb-3">
+            <label class="form-label">Оплата</label>
+            <select class="form-select" id="paymentOption" required>
+              <option value="full">Оплатити всю суму</option>
+              <option value="partial">Оплатити 30%</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Час поїздки</label>
+            <select class="form-select" id="rideTimeOption" required>
+              <option value="now">Замовити зараз</option>
+              <option value="later">Замовити на певний час</option>
+            </select>
+          </div>
+
+          <div class="mb-3" id="scheduledTimeBlock" style="display:none;">
+            <label for="scheduledTime" class="form-label">Виберіть дату і час</label>
+            <input type="datetime-local" class="form-control" id="scheduledTime">
+          </div>
+
         </form>
       </div>
       <div class="modal-footer">

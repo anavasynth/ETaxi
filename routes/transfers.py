@@ -47,19 +47,34 @@ def create_transfer_order():
     email = data.get('email')
     phone = data.get('phone')
     seats = data.get('seats')
-    price = data.get('price')
+    price = data.get('paymentAmount')
     transfer = data.get('transfer')
+    transfer_date = data.get('transferDate')
+    payment_type = data.get('paymentType')
+
+
 
     if isinstance(price, str) and 'PLN' in price:
         price = price.replace('PLN', '').strip()
 
+    # Обчислюємо повну вартість
+    full_price = float(price) * 100 / 30
+
+    # Формуємо поле для запису типу оплати
+    if payment_type == 'partial':
+        payment_info = f"30% (full price: {full_price} PLN)"
+    else:
+        payment_info = "Full price"
+
     new_transfer = Transfer(
         first_name=first_name,
-        email = email,
-        phone = phone,
+        email=email,
+        phone=phone,
         seats=seats,
         price=price,
         transfer=transfer,
+        transfer_date=transfer_date,
+        payment_type=payment_info,
         payment_status='pending'
     )
 

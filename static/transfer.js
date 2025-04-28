@@ -49,13 +49,26 @@ document.getElementById('payTransferBtn').addEventListener('click', async () => 
   const phone = document.getElementById('phone').value;
   const seats = document.getElementById('seats').value;
   const price = document.getElementById('price').value;
+  const transferDate = document.getElementById('transferDate').value;
+  const paymentType = document.getElementById('paymentType').value;
   const transfer = document.getElementById('transferModalLabel').textContent.split(': ')[1];
+
+  const paymentAmount = paymentType === 'partial' ? (parseFloat(price) * 0.3).toFixed(2) : parseFloat(price);
 
   try {
     const response = await fetch('/create-transfer-order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ firstName, email, phone, seats, price, transfer })
+      body: JSON.stringify({
+        firstName,
+        email,
+        phone,
+        seats,
+        paymentAmount,
+        transfer,
+        transferDate,
+        paymentType
+      })
     });
 
     const responseText = await response.text();
@@ -70,13 +83,17 @@ document.getElementById('payTransferBtn').addEventListener('click', async () => 
         const modal = bootstrap.Modal.getInstance(document.getElementById('transferModal'));
         modal.hide();
 
-        // Перенаправлення на Stripe
+        // Переходимо на Stripe Checkout
         const stripe = Stripe('pk_test_51RE7BEPFfDXYRYYJDO3ubsoT4BwW3V6GSVutYTRJ3b3pkcrK89wM7EYkPlJJSKsqw57R5rYVykXCUuUEfrK6uSCl000lUoBaAb');
+
+        // Якщо часткова оплата, наприклад, 30%
+
+
         const checkoutResponse = await fetch('/create-checkout-session', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            price: parseFloat(price),
+            price: paymentAmount,
             transfer_id: transferId,
             order_type: 'transfer'
           })

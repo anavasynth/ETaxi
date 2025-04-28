@@ -21,6 +21,9 @@
             <li><strong>Трансфер:</strong> {{ transfer }}</li>
             {% endif %}
             <li><strong>Ціна:</strong> {{ price }} грн</li>
+            {% if payment_type != 'Full price' %}
+            <li><strong>Предоплата</strong> {{ payment_type }}</li>
+            {% endif %}
             <li><strong>Дата та час:</strong> {{ date_time }}</li>
         </ul>
         <p>Ми з вами скоро зв'яжемося!</p>
